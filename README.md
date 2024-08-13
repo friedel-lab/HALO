@@ -52,7 +52,7 @@ Package structure
 
 	*.sh        Shell startup scripts
 	*.bat       Windows startup scripts
-	README.txt  this file
+	README.md  this file
 	doc/        HALO documentation
 	lib/        Compiled binaries
 	src/        HALO source codes
