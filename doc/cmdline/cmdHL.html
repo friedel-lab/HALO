@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>Command line tools - Half-life calculation</title>
+  <link rel="StyleSheet" href="../styles.css" type="text/css">
+<SCRIPT LANGUAGE="JavaScript" SRC="../frames.js"></SCRIPT></head>
+<body onload="ensureframes()">
+<h2>Command line tools - Half-life calculation</h2>
+<br>
+Combined with the arguments for data loading and normalizing you can use the flags described below for the 
+final half-life calculations.
+<br><br>
+<h3>List of necessary flags</h3>
+
+Since you can use an unlimited number of different half-life calculations, you can use the flag <code>-h</code>
+ followed by the number of the current calculation for doing several methods at once.
+
+<table style="text-align: left; width: 100%;" border="0" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+	    <td><code>-h1</code></td>
+	    <td><code>method</code></td>
+	    <td>First method for calculation of half-lives (e.g. 'pre' for pre-existing/total based, 
+	    'new' for newly transcribed/total based or 'new/pre' for newly transcribed/pre-existing based calculations)</td>
+    </tr>
+    <tr>
+    	<td>...</td>
+    </tr>
+    <tr>
+	    <td><code>-hn</code></td>
+	    <td><code>method</code></td>
+	    <td>n-th method for half-life calculation</td>
+    </tr>
+    <tr>
+	    <td><code>-t</code></td>
+	    <td><code>time</code></td>
+	    <td>Labeling time point for which calculation will be done</td>
+    </tr>
+   </tbody>
+ </table>
+
+<h3>List of optional flags</h3>
+
+<table style="text-align: left; width: 100%;" border="0" cellpadding="2" cellspacing="2">
+  <tbody>
+  		<tr>
+  		<td><code>-plot</code></td>
+  		<td><code>BOOLEAN</code></td>
+  		<td>TRUE if half-life calculations should be plotted.</td>
+  		</tr>
+        <tr>
+    	<td><code>-bias</code></td>
+    	<td><code>BOOLEAN</code></td>
+    	<td>TRUE if bias correction should be performed and used before half-life calculation. For this 
+    	method to work you have to also use the <code>-R</code>, <code>-ur</code> and <code>-ufo</code> flags.</td>
+    </tr>
+    <tr>
+    	<td><code>-corr</code></td>
+    	<td><code>numerical</code></td>
+    	<td>The half-life median that will be used for median-based correction factor 
+    	calculation; for '-corr -1' the median will be calculated from your half-life calculations</td>
+    </tr>
+    <tr>
+    	<td><code>-o</code></td>
+    	<td><code>filename</code></td>
+    	<td>Name of the file in which the half-life values will be written</td>
+    </tr>
+    <tr>
+    	<td><code>-w</code></td>
+    	<td><code>printing information</code></td>
+    	<td>Which information will be printed: 'halflife', 'ratio' or 'both'</td>
+    </tr>
+    <tr>
+    	<td><code>-m</code></td>
+    	<td><code>methods</code></td>
+    	<td>The half-life calculation methods whose results should be included in the output; 
+    	these methods have to be a subset of the previously defined methods for calculation. 
+    	If no list of methods is specified, every calculation will be printed. The methods are 
+    	called <code>pre</code>, <code>new</code> and <code>new/pre</code> (see above); 
+    	for more than one method please separate the methods with commas (e.g. '-m	pre,new')</td>
+    </tr>
+   </tbody>
+ </table>
+For the printing of your output you have to use the flags <code>-o</code>, <code>-w</code> and 
+<code>-m</code> combined.<br><br>
+
+<h3>Example call</h3>
+<code>
+-i data.txt -ct totalRNA2 -cp preexistingRNA2 -cn newlytranscribed_HumanExon2 -l standard -h1 new -h2 pre -h3 new/pre
+ -t 60 -o halflives.txt -w halflife -m new,pre,new/pre
+</code>
+<!-- footer start -->
+<br/><br/>
+<hr size="1"/>
+<div style="font-size:small"><a target="_blank" href="http://www.bio.ifi.lmu.de/software/HALO/">HALO</a> documentation</div>
+<!-- footer end -->
+
+</body>
+</html>

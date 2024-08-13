@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  
+  <title>Normalization menu</title>
+  <link rel="StyleSheet" href="../styles.css" type="text/css">
+  
+  <script language="JavaScript" src="../frames.js"></script>
+</head>
+<body onload="ensureframes()">
+<h2>Normalization with the GUI</h2>
+If you want to calculate half-life values for your data, you first have to determine correction 
+factors for the normalization. For this purpose the HALO GUI provides the Normalization menu, where 
+you can choose between a set of methods for the normalization of your data. 
+
+<h3><span style="font-weight: bold;">Extending the menu</span></h3>
+Normalization is available after you have loaded the data. 
+You can access the menu by through clicking the menu option 
+labeled <span style="font-weight: bold;">Normalization</span> from the <span style="font-weight: bold;">Normalization</span> menu in the menu bar. 
+
+<h3><span style="font-weight: bold;">Normalization methods</span></h3>
+In the current version (1.3) you can choose between two normalization methods; if you have loaded 
+data in unequal numbers only the second of these is accessible. 
+
+<ul>
+	<li><span style="font-weight: bold;">Linear Regression</span><br>
+	This method performs normalization through a simple linear regression. You can choose between 
+	calculating the ratio over the average of all replicates (default), the average over the ratios for each 
+	replicate or one replicate alone for this procedure. </li>
+	
+	<li><span style="font-weight: bold;">Median half-life based</span><br>
+	This method is based on a median half-life that you have to calculate separately and can enter 
+	in the popup dialog. You will have to choose at least one half-life calculation method, labeling time and 
+	(optionally) a replicate for the ratio calculation in this method. </li>
+</ul>
+
+In order to start the process you have to click the <span style="font-weight: bold;">Start</span> button.
+Your resulting correction factors will then be displayed and used automatically for the half-life calculation.
+
+<h3><span style="font-weight: bold;">Plotting the results</span></h3>
+If you have chosen linear regression as normalization method, you have the possibility to plot the results.
+In the graph your data will be shown as scatter plot (blue), and the linear regression line will be displayed in 
+red. This procedure might take a couple of seconds. You can save this graph or the values as a plotting file.
+You can always save plots and change properties through right clicking in the figure. 
+
+<h3><span style="font-weight: bold;">Subsequent steps</span></h3>
+Normalization unlocks the <a href="menumedian.html">Half-Life</a> menu in the menu bar.
+
+<!-- footer start -->
+<br/><br/>
+<hr size="1"/>
+<div style="font-size:small"><a target="_blank" href="http://www.bio.ifi.lmu.de/software/HALO/">HALO</a> documentation</div>
+<!-- footer end -->
+
+</body>
+</html>

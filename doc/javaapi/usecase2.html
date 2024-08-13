@@ -1,0 +1,396 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  
+  <title>Sample Use Case 3: Using Half-life calculation methods</title>
+  <link rel="StyleSheet" href="../styles.css" type="text/css">
+  
+  
+  <script language="JavaScript" src="../frames.js"></script>
+</head>
+<body onload="ensureframes()">
+<h3>Sample
+Use Case 3: Using Normalization and Half-life calculation methods<br>
+</h3>
+This sample use case demonstrates the usage of normalization and half-life calculation with HALO. 
+The complete source code can be found in the package <code>halo.examples</code>. Please note that, 
+since the different parts of HALO depend on each other, the source code provided below is 
+depending on previous loading of data, as shown in the previous <a href="usecase1.html">use case</a>.
+<span style="font-weight: bold;">Important note:</span>
+
+All variable parameters (methods, thresholds, etc) that are used in this example are chosen 
+<span style="text-decoration: underline;">arbitrarily</span> and only for description purposes. 
+These parameters have to be chosen carefully depending on the data and goals for practical uses.<br>
+<br>
+<span style="font-weight: bold;">Table of contents:</span><br>
+<ul>
+	<li><a href="#param">Choose parameters</a></li>
+	<li><a href="#median">Calculate median half-life</a></li>
+	<li><a href="#norm">Normalize data</a></li>
+	<li><a href="#pqs">Filtering with probeset quality scores</a></li>
+   <li><a href="#halfl">Calculate half-lives</a></li>
+   <li><a href="#plot">Plot half-lives</a></li>
+   <li><a href="#output">Printing of half-lives to a file</a></li>
+   <li><a href="#outp">Output</a></li>
+</ul>
+<br>
+
+<br>
+<span style="font-weight: bold;"><a name="param"></a>
+<span style="text-decoration: underline;">Choose parameters</span>
+</span><br>
+</br>
+We first have to set several important parameters: The labeling time and the half-life
+calculation method that we want to set. How to do this is demonstrated in the example below.
+<br></br>
+<table style="text-align: left; width: 100%;" border="0" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="width: 10px;"></td>
+      <td><code>
+      	//choose labeling time<br>
+		double time = 55;</br>
+        </br>
+		//Choose half-life calculation methods</br>
+		ArrayList<HalfLife> medMethods = new ArrayList<HalfLife>();</br>
+        medMethods.add(new HalfLife_New());</br>
+        medMethods.add(new HalfLife_Pre());</br>
+      </code>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<br>
+<span style="font-weight: bold;"><a name="median"></a>
+<span style="text-decoration: underline;">Calculate median half-life</span>
+</span><br>
+</br>
+Before starting the half-life calculation, we want to calculate the median half-life.
+<br></br>
+<table style="text-align: left; width: 100%;" border="0" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="width: 10px;"></td>
+      <td><code>
+        double medianHL = median(data, medMethods, time);</br>
+        System.out.println("Median half-life "+medianHL);</br>
+      </code>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<br>
+<span style="font-weight: bold;"><a name="norm"></a>
+<span style="text-decoration: underline;">Normalize data</span>
+</span><br>
+</br>
+A crucial step is the normalization of the data. Below is demonstrated how to use linear regression 
+as normalization method and how to calculate correction factors. For a more detailed description of the 
+different available methods see the <a href="../javadoc/index.html">Javadoc</a>. Another parameter 
+that can be set before calculations is the method for calculation of ratios; we can either choose 
+that the ratio of the average over all replicates should be used, or the average over the ratios for 
+all replicates. Alternatively you can reduce the calculations to one replicate if you like to.<br>
+<br>
+<table style="text-align: left; width: 100%;" border="0" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="width: 10px;"></td>
+      <td><code>
+             //Normalization by linear regression</br>
+        Normalization lr = new LinearRegression(data);</br>
+		//set method for ratio calculation (default = RATIOFIRST)</br>
+		data.setMethod(Data.AVERAGEFIRST);</br>
+		//OR </br>
+		//set replicate</br> 
+//		lr.setReplicate(1);</br>
+        CorrectionFactors factors = lr.calculateCorrectionFactors();
+      </code>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<br>
+<span style="font-weight: bold;"><a name="pqs"></a>
+<span style="text-decoration: underline;">Filtering with probeset quality scores</span>
+</span><br>
+</br>
+For the filtering with probeset quality scores previous normalization is necessary. We can thus 
+perform this filtering step only now, after normalization. The example shows how to use this 
+filter and write the filtered data into a file. If the gene name label used for the attribute is
+<b>not</b> <code>gene_name</code> you have to set it (like below) to the correct label. 
+If you do not want a histogram as output, choose <code>false</code> as last parameter in the filter 
+method. 
+<br></br>
+<table style="text-align: left; width: 100%;" border="0" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="width: 10px;"></td>
+      <td><code>
+        //Filter with PQS</br>
+        data.setGeneName("Gene Symbol");</br>
+        data = Filter.filterPQS(data, lr, true);  </br>  
+        data.writeOutput("Examples_mouse_filtered_pqs.txt", colTot, colNew, colPre, colAtt);</br>
+      </code>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+<br>
+<span style="font-weight: bold;"><a name="halfl"></a>
+<span style="text-decoration: underline;">Calculate half-lives</span></span><br>
+<br>
+<b>Half-Life calculation:</b></br>
+After data is loaded and normalized we can start directly with the calculation of half-lives. 
+We can calculate half-lives either based on the median which we have already calculated, or 
+with the data normalized through linear regression. Below both cases are demonstrated: At first 
+the calculation of half-lives with the method based on Newly transcribed/Total RNA and the median half-life, 
+for which we have to repeat normalization, and secondly the calculation of half-lives with the 
+Pre-existing/Total method for linear regression normalized data.
+<br>
+<br>
+<table style="text-align: left; width: 100%;" border="0" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="width: 10px;"></td>
+      <td><code>
+       //Choose half-life calculation method: based on newly transcribed/total RNA</br>
+        HalfLife hlNew = new HalfLife_New();</br>
+        hlNew.initialize(data);</br>
+</br>
+        //Use normalization based on median half-life</br>
+        hlNew.calculateCorrectionFactors(medianHL, time);</br>
+        //calculate the half-lives</br>
+        hlNew.calculateHalfLives(time);</br>
+        //print the half-lives with gene names in an output file</br>
+        hlNew.printHalfLivesWithGeneNames("Example_mouse_halflives_nt.txt");</br>
+        </br>
+        //Calculate a second half-life method: based on pre-existing/total RNA</br>
+        HalfLife hlPre = new HalfLife_Pre();</br>
+        hlPre.initialize(data);</br>
+        //Use normalization based on linear regression (see above)</br>
+        hlPre.setCorrectionFactor(factors);</br>
+        //calculate the half-lives</br>
+        hlPre.calculateHalfLives(time);
+</code></td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+<br>
+
+<span style="font-weight: bold;"><a name="plot"></a>
+<span style="text-decoration: underline;">Plot normalization results and half-lives</span></span><br>
+<br>
+We can both plot the half-lives and the results from normalization. For normalization 
+plotting you simply have to call one function. The plotting of half-lives requires 
+more parameters. The code example below shows 
+you how you can do this. We have to prepare lists defining used methods, labeling times and 
+replicates for the legend of the graph before constructing the graph.
+<br>
+<br>
+<table style="text-align: left; width: 100%;" border="0" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="width: 10px;"></td>
+      <td><code>
+	GraphHandler.plotNormalization(lr, data);</br>
+	//Prepare the parameters necessary for plotting</br>
+		List&lt;HalfLife&gt; lives = new ArrayList&lt;HalfLife&gt;();</br>
+		lives.add(hlNew);</br>
+		</br>
+		//Define the names of the used methods</br>
+		List&lt;String&gt; methods = new ArrayList&lt;String&gt;();</br>
+		methods.add(HalfLife.NEWLY);</br>
+		</br>
+		//Define the corresponding labeling times</br>
+		List&lt;Double&gt; times = new ArrayList&lt;Double&gt;();</br>
+		times.add(time);</br>
+		</br>
+		//Leave replicate definition empty so that an average over all replicates will be used</br>
+		List&lt;Integer&gt; replicates = new ArrayList&lt;Integer&gt;();</br>
+		</br>
+		//Start plotting</br>
+		XYGraphConstructor graphConstructor = GraphHandler.plotHalfLives(data, lives, methods, </br>
+				times, replicates);</br>
+		graphConstructor.generateGraph();</br>
+</code></td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+<br>
+
+<span style="font-weight: bold;"><a name="output"></a>
+<span style="text-decoration: underline;">Printing of half-lives to a file data</span></span><br>
+<br>
+Half-lives and ratios for each half-live calculation method can be printed in an output file 
+as shown below. We first have to define a set of parameters: A header for the output file can be defined and we can print either 
+half-life values, ratios or both. We can print any number of half-life results in any order.
+<br>
+<br>
+<table style="text-align: left; width: 100%;" border="0" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="width: 10px;"></td>
+      <td><code>
+      lives.add(hlPre);</br>
+///Define parameters</br>
+		String header = "Spotid\tNewly_transcribed/Total\tPre-existing/Total"; //header for the output file</br>
+		int which     = HalfLifeWriter.HALFLIFE; //defines if you want only half-lives, ratios or both</br>
+		String output = SampleUseCase1.DATAFILE+".halflives";</br>
+		</br>
+		//Start printing</br>
+		new HalfLifeWriter(output, header, which, lives.get(0), lives.get(1));</br>
+</code></td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+
+<span style="font-weight: bold;"><a name="outp"></a><span style="text-decoration: underline;">Output</span></span><br>
+<br>
+The output produced by HALO should look like this:
+<br>
+<br>
+<table style="text-align: left; width: 100%;" border="0" cellpadding="2"
+	cellspacing="2">
+	<tbody>
+		<tr>
+			<td style="width: 10px;"></td>
+			<td><code>Loading data...<br>
+Done loading data.<br>
+You have 31451 probesets.<br>
+------------------------------<br>
+Loading attributes...<br>
+Done loading attributes.<br>
+------------------------------<br>
+Filtering data...<br>
+Done filtering data.<br>
+You have 11031 probesets.<br>
+------------------------------<br>
+Filtering data...<br>
+Done filtering data.<br>
+You have 10984 probesets.<br>
+------------------------------<br>
+Filtering data...<br>
+Done filtering data.<br>
+You have 10937 probesets.<br>
+------------------------------<br>
+Filtering data...<br>
+Done filtering data.<br>
+You have 10731 probesets.<br>
+------------------------------<br>
+Starting linear regression...<br>
+Done with linear regression.<br>
+These are your correction factors: <br>
+c_u: 0.8183804750680859<br>
+c_l: 0.14120777127743048<br>
+------------------------------<br>
+Starting half-life calculation...<br>
+Done calculating half-lives.<br>
+------------------------------<br>
+Starting linear regression...<br>
+Done with linear regression.<br>
+These are your correction factors: <br>
+c_u: 0.8183804750680859<br>
+c_l: 0.14120777127743048<br>
+------------------------------<br>
+Starting half-life calculation...<br>
+Done calculating half-lives.<br>
+------------------------------<br>
+Starting linear regression...<br>
+Done with linear regression.<br>
+These are your correction factors: <br>
+c_u: 0.8475997207116831<br>
+c_l: 0.08835652212253098<br>
+------------------------------<br>
+Starting half-life calculation...<br>
+Done calculating half-lives.<br>
+------------------------------<br>
+Starting linear regression...<br>
+Done with linear regression.<br>
+These are your correction factors: <br>
+c_u: 0.8475997207116831<br>
+c_l: 0.08835652212253098<br>
+------------------------------<br>
+Starting half-life calculation...<br>
+Done calculating half-lives.<br>
+------------------------------<br>
+Starting linear regression...<br>
+Done with linear regression.<br>
+These are your correction factors: <br>
+c_u: 0.8469761513565193<br>
+c_l: 0.1055589785867248<br>
+------------------------------<br>
+Starting half-life calculation...<br>
+Done calculating half-lives.<br>
+------------------------------<br>
+Starting linear regression...<br>
+Done with linear regression.<br>
+These are your correction factors: <br>
+c_u: 0.8469761513565193<br>
+c_l: 0.1055589785867248<br>
+------------------------------<br>
+Starting half-life calculation...<br>
+Done calculating half-lives.<br>
+------------------------------<br>
+Median half-life 320.3161021500094<br>
+Starting linear regression...<br>
+Done with linear regression.<br>
+These are your correction factors:<br> 
+c_u: 0.8336859400282673<br>
+c_l: 0.11746855592414432<br>
+------------------------------<br>
+Filtering data...<br>
+Done filtering data.<br>
+You have 7208 probesets.<br>
+------------------------------<br>
+Starting half-life calculation...<br>
+Done calculating half-lives.<br>
+------------------------------<br>
+Starting half-life calculation...<br>
+Done calculating half-lives.<br>
+------------------------------<br>
+Data loaded for graph construction...<br>
+Graph generated.<br>
+Writing results into file...<br>
+Done writing results.</code></td>
+		</tr>
+	</tbody>
+</table>
+<br>
+The following files should be produced:
+<br>
+<br>
+<ul>
+	<li><code>Example_mouse_filtered_pqs.txt</code></li>
+	<li><code>Example_mouse_halflives_nt.txt</code></li>
+</ul>
+<br>
+The following plots should be produced:
+<br>
+<ul>
+	<li>Normalization results</li>
+	<li>Calculated half-lives</li>
+	<li>Histogram of probe set quality scores</li>
+</ul>
+
+<!-- footer start -->
+<br/><br/>
+<hr size="1"/>
+<div style="font-size:small"><a target="_blank" href="http://www.bio.ifi.lmu.de/software/HALO">HALO</a> documentation</div>
+
+<!-- footer end -->
+
+</body>
+</html>

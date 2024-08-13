@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  
+  <title>User defined classes</title>
+  <link rel="StyleSheet" href="../styles.css" type="text/css">
+  
+  <script language="JavaScript" src="../frames.js"></script>
+</head>
+<body onload="ensureframes()">
+<h2>User defined classes</h2>
+HALO provides some easy extendable packages so that you can adapt it to best fit your purposes. You can integrate 
+new half-life calculation methods, new alpha functions, filtering methods and novel normalization methods. 
+ 
+<h3>Basic procedures</h3>
+For most of the user defined extensions you have to write a new Java class that extends or implements a given 
+class or interface. For details on these principles see the following sections:
+<ul>
+	<li><a href="#alpha">Writing your own alpha functions</a></li>
+	<li><a href="#filter">Writing your own filtering methods</a></li>
+	<li><a href="#norm">Writing your own normalization methods</a></li>
+	<li><a href="#half">Writing your own half-life calculation methods</a></li>
+	<li><a href="#gui">Making your methods available for the user interface</a></li>
+</ul>
+
+<h3><a name="alpha"></a>Writing your own alpha functions</h3>
+For the calculation of half-lives you need to use an alpha function. In HALO two different methods are implemented 
+for this function: The constant function always returning 1, and the function that models the cell division. However, 
+you might like to expand this set of alpha functions. You can do this very easily by following the descriptions below. <br>
+You can find the current alpha functions (the classes <code>AlphaConstant</code> and <code>AlphaCellDivision</code>) 
+in the package <code>halo.halflife.alpha</code>. If you would like to extend these you have to create a new class 
+in this package that implements the interface <code>Alpha</code>. You will have to implement the function 
+<code>alpha(t)</code>, but otherwise you can add functions as you like to.<br><br>
+
+
+<h3><a name="filter"></a>Writing your own filtering methods</h3>
+HALO currently provides a set of five different filtering methods: Filtering according to a threshold, according to 
+present/absent calls, according to a calculated correction bias or probeset quality control filtering with a 
+threshold or for the optimal probeset. You can find these methods in the class <code>halo.data.Filter</code>. If 
+you want to implement your own filtering method you can do this directly in the same class or extend this class.
+Your method has to take a <code>Data</code> object as an argument and return the filtered <code>Data</code> 
+object again. 
+
+<h3><a name="norm"></a>Writing your own normalization methods</h3>
+Normalization of your data is an important step in the half-life calculation pipeline. In HALO linear regression is 
+implemented as the standard normalization method, and additionally you can perform normalization based on the 
+median half-life. This second method is handled in a different way than the standard method and should not serve as 
+an example for your own normalization methods. You can find the <code>Normalization</code> class that contains 
+all methods that are required for a new normalization method in the package <code>halo.normalization</code>.<br>
+If you want to implement your own method, you simply have to extend this class. Methods for the calculation of 
+quality control and the generation of a normalization plot are inherited. The most important method is the 
+<code>calculateCorrectionFactors()</code> method, which has to be implemented with your own method.
+
+<h3><a name="half"></a>Writing your own half-life calculation methods</h3>
+Currently three different methods for half-life calculation are implemented in HALO: The methods are based on 
+the ratio of newly transcribed RNA to total RNA, pre-existing RNA to total RNA and newly transcribed RNA to pre-existing RNA, respectively. 
+You can find these three classes (<code>HalfLife_New</code>, <code>HalfLife_Pre</code> and <code>HalfLife_NewPre</code>) 
+in the package <code>halo.halflife</code>. They are subclasses of <code>HalfLife</code>, which contains every 
+necessary method for half-life calculation. If you want to implement your own method you simply have to create 
+a new class which extends <code>HalfLife</code>. <br>
+You will have to implement the following methods:
+<ul>
+	<li><code>initialize(Data data)</code></li>
+	<li><code>initialize(Data data, int replicate)</code></li>
+	<li><code>calculateHalfLives(double t)</code></li>
+	<li><code>calculateCorrectionFactors(double medianHWZ, double t)</code></li>
+	<li><code>calculateMedianOverReplicates()</code></li>
+</ul>
+The first two methods serve as initialization where important variables can be set and the ratios can be calculated 
+according to your method. For an example of this you can see <code>HalfLife_New</code>. In <code>calculateHalfLives</code>
+ you can implement your half-life calculation method and perform the calculation for every given probeset and a 
+ given labeling time <code>t</code>. 
+The method <code>calculateCorrectionFactors</code> calculates the correction factors based on the median half-life and 
+a given labeling time <code>t</code>. If you do not need such a method you can simply leave the body empty. 
+In <code>calculateMedianOverReplicates()</code> you have to define how the median over all replicates will be 
+calculated.  
+
+<h3>Making your methods available for the user interface</h3>
+The two different types of user interfaces, command line and GUI, are currently implemented in such a way that 
+they provide easy access to the calculations and methods that come with HALO. If you have extended HALO with your 
+own methods and want those to appear in the GUI and command line, you will have to perform some direct changes 
+in the code.<br>
+<h4>Command line tools</h4>
+You will find those tools implemented in the package <code>halo.userinterface.cmdline</code>. If you have implemented 
+your own filtering method, you have to adapt the method <code>prepareData(String[] input)</code> in the class 
+<code>CmdFilterData</code>. This method takes a set of command line arguments for data loading and handling 
+and performs the requested operations. You can add your filtering method here.<br>
+<br>
+<code>CmdNormalization</code> implements the normalization interface for the command line. Here you can simply add 
+your method to the <code>prepareNormalization(Data data)</code> function. <br>
+<br>
+If you have implemented more half-life calculation methods, you have to adapt the <code>main(String[] args)</code> method 
+in the class <code>CmdHalfLife</code>. <br>
+
+<h4>GUI</h4>
+The GUI is handled in the classes <code>Gui</code>, <code>GuiFilterData</code>, <code>GuiHalfLife</code> and 
+<code>GuiNormal</code> in the package <code>halo.userinterface.gui</code>. If you want your own methods to 
+appear as well you will have to change two parts: first, you will have to change the implementation in the
+corresponding interface class, so that your method can be used; second, you will have to change the corresponding 
+choosing dialogs in the GUI itself, so that the user has the possibility to use your method.<br>
+<br>
+For a new alpha function you have to change only the GUI, through simply adding a new RadioButton to the dialog 
+in <code>actionChooseAlpha()</code> (you will find this in the class <code>Gui</code> and the method <code>
+generateMenuListeners()</code>) with a corresponding action listener that sets the alpha function.<br>
+<br>
+If you have implemented a new filtering method, you have to extend the subpanel <b>Filtering</b>. You can add a 
+new RadioButton or CheckBox to the method <code>subMenuFilter</code> in <code>Gui</code> and set the new method 
+in the corresponding action listener for the object <code>guiData</code>. This is an object of the class <code>
+GuiFilterData</code>, where you have to adapt <code>prepareData()</code> similarly to the command line.<br>
+<br>
+When you have implemented a new method for normalization, you will have to add a new RadioButton to the 
+dialog in the method <code>subMenuNorm</code> in <code>Gui</code> and a corresponding actionlistener that 
+transfers the decision to the object <code>guiNorm</code>. The class <code>GuiNormal</code>, of which this 
+object is an instance, provides the method <code>calcNormalization</code> that you also have to adapt.<br>
+<br>
+If you have implemented a new half-life calculation method, you have to add a RadioButton in the method <code>
+hlCalculationDialog</code> in <code>Gui</code> and add the method to the <code>guiHL</code> object with an 
+actionlistener. This object is an instance of <code>GuiHalfLife</code>, where you also have to adapt the 
+method <code>generateHL</code> so that it uses your method if told so. 
+
+
+
+<!-- footer start -->
+<br/><br/>
+<hr size="1"/>
+<div style="font-size:small"><a target="_blank" href="http://www.bio.ifi.lmu.de/software/HALO/">HALO</a> documentation</div>
+<!-- footer end -->
+
+</body>
+</html>

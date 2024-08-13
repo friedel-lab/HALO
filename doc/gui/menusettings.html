@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  
+  <title>Settings menu</title>
+  <link rel="StyleSheet" href="../styles.css" type="text/css">
+  
+  <script language="JavaScript" src="../frames.js"></script>
+</head>
+<body onload="ensureframes()">
+<h2>The settings menu</h2>
+The settings menu allows you to enter a number of constant values, so that you do not have to input these at 
+every relevant point. You can always change these values.
+
+
+<h3><span style="font-weight: bold;">Set alpha function</span></h3>
+In the current version (1.3) you can choose between two different alpha functions that are used for half-life 
+calculation. The first of these is the default method, which always returns 1. The second method models the cell 
+division; for this method you have to enter the numerical parameter <code>ccl</code> (cell cycle length).
+
+<h3><span style="font-weight: bold;">Set labeling time</span></h3>
+Here you can enter a constant labeling time that will be used for all subsequent analyses, e.g. half-life 
+calculations.
+
+<h3><span style="font-weight: bold;">Set path to R</span></h3>
+For <a href="menuquality.html">quality control</a> you have to have <a href="http://www.r-project.org/">R</a>
+installed. You can enter the path to it's bin folder here.
+
+<h3><span style="font-weight: bold;">Set maximum/minimum half-life</span></h3>
+For ratios equal to or larger than 1 the half-life calculation is difficult, resulting in negative or <code>NaN</code> values. This problem is avoided by defining a maximum and minimum half-life. Default values for this are 10000 for maximum half-life and 5 for minimum half-life. You can customize these values with this menu point.
+
+<h3><span style="font-weight: bold;">Set replicate</span></h3>
+If you want to keep using only one replicate for all your analyzes, you can enter its number (starting from 1) here 
+and won't have to enter it every time.
+
+<h3><span style="font-weight: bold;">Set gene name attribute label</span></h3>
+Per default the label of the gene name attribute is set to <code>gene_name</code>, which may differ from the label 
+in your data. When you load a multiple fasta file or try to filter according to PQS values, for which gene names 
+are needed, you will be asked to change the label to one that fits your data. You can also use this menu point to 
+change it previously.
+
+<!-- footer start -->
+<br/><br/>
+<hr size="1"/>
+<div style="font-size:small"><a target="_blank" href="http://www.bio.ifi.lmu.de/software/HALO/">HALO</a> documentation</div>
+<!-- footer end -->
+
+</body>
+</html>

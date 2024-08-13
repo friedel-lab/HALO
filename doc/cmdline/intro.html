@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  
+  <title>Command line tools</title>
+  <link rel="StyleSheet" href="../styles.css" type="text/css">
+<SCRIPT LANGUAGE="JavaScript" SRC="../frames.js"></SCRIPT></head>
+<body onload="ensureframes()">
+<h2>Command line tools</h2>
+<br>
+HALO provides a set of command line tools for fast access to 
+the framework of methods for half-life calculation and related 
+analyses. This service can easy be used for automated computations 
+and batch jobs. In this section of the documentation you can find 
+general information on how to use these tools, including descriptions
+of accessing the command line framework and lists of available methods.
+For an easier understanding example calls are provided for each function 
+of the tools, and an example use case analogous to those for the <a href=
+"../gui/guiusecase.html">GUI</a> and the <a href="../javaapi/usecases.html">
+Java API</a>.<br>
+<br>
+<h3>Calling from the command line<br>
+</h3>
+All tools are called using a single script file which can be found in
+the root directory of the package:<br>
+<ul>
+  <li><code>cmdline.sh</code> - for systems with
+a&nbsp;bash-shell (e.g. Linux)</li>
+  <li><code>cmdline.bat</code> - for Microsoft
+Windows Systems</li>
+</ul>
+The set of parameters passed to the script can be combined individually for a custom output. 
+For a complete list of possible parameters call the script without any parameters, or the flags 
+<code>-h</code> or <code>help</code>. The combinations of flags used as parameters defines, which 
+calculational methods are performed. You can find a more detailed description of these parameters in this 
+section. <br>
+<br>
+<span style="font-weight: bold;">Note:</span> All examples in this documentation use the <code>cmdline.sh</code> 
+script for bash shells. Windows users simply replace this command with <code>cmdline.bat</code>.<br>
+<br>
+Example:<br>
+<code>cmdline.sh -h </code>- Displays the usage with a complete list of possible flags.<br>
+<br>
+<h3>Memory<br>
+</h3>
+By default 1GB of memory will be available for the Java VM when using
+a command line tool. If you want to change this amount, specificy <code>-Xmx000m</code> as the first argument where <code>000</code> is the amount of megabytes which will be available. (Note: the <code>-Xmx</code> parameter is directly passed to the Java virtual machine, syntax errors will cause error messages of the Java interpreter). <br>
+<br>
+Example:<br>
+<code>cmdline.sh -Xmx2048m </code> ... - starts the commandline tool with 2GB of available memory<br>
+<br>
+
+<h3>Tools</h3>
+The set of command line tools can be divided into the three main parts of the HALO framework: Data filtering, 
+Normalization and Half-life calculation. Which of these is performed is depending on the set of parameters 
+called with the script. For every of the listed methods the previous loading of data is needed; how to do this
+is described in the first section <a href="cmdData.html">loading data</a>. Below you can find a detailed description of every of these sections, as well as information 
+on how they are depending on each other.<br>
+<ul>
+  <li><a href="cmdData.html">loading data</a> - how to load your data from a file, filter and evaluate it.</li>
+  <li><a href="cmdNorm.html">normalization</a> - parameters used for normalization of the data.</li>
+  <li><a href="cmdHL.html">half-life calculation</a> - a description of flags used for half-life 
+  calculation and related methods.</li>
+</ul>
+<!-- footer start -->
+<br/><br/>
+<hr size="1"/>
+<div style="font-size:small"><a target="_blank" href="http://www.bio.ifi.lmu.de/software/HALO/">HALO</a> documentation</div>
+<!-- footer end -->
+
+</body>
+</html>

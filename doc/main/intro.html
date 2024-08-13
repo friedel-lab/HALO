@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  
+  <title>Introduction</title>
+  <link rel="StyleSheet" href="../styles.css" type="text/css">
+  
+  <script language="JavaScript" src="../frames.js"></script>
+</head>
+<body onload="ensureframes()">
+<h2>
+HALO - A Java Framework for precise transcript half-life determination<br>
+</h2>
+<!-- intro start-->
+HALO is a software package that provides a set of different methods for 
+expression data handling, normalization and subsequent half-life calculation, 
+with an easy-to-use graphical user interface as well as a commandline tool 
+and a Java API for developers.<br>
+<br>
+New developments of experimental technology now make
+it possible to quantify de novo transcription and RNA decay in a single
+experimental setting. Using such measurements, transcript half-lives
+can be determined with a so far unreached accuracy. As several studies
+have shown, such transcript half-lives provide important insights
+into the regulation of biological processes on a much more general
+level than individual measurements of differential gene expression.
+<br>
+<br>
+HALO is the first software framework for the
+precise determination of transcript half-lives from measurements of
+RNA de novo transcription. It provides methods for quality control,
+filtering and normalization with easy access through a  <span style="font-weight: bold;">
+graphical user interface</span>, a set of <span style="font-weight: bold;">command
+line tools</span> and a well-documented <span style="font-weight: bold;">application
+programming interface (API)</span>. Thus, it can be used both by biologists without programming
+skills to determine transcript half-lives fast and reliably as well as software
+developers integrating transcript half-life analysis into other gene
+expression profiling pipelines. The framework is written in Java and requires the 
+<a href="http://www.java.com" target="_blank">Java Runtime Environment 6.0</a> or
+higher.<br>
+<br>
+<!-- intro end-->
+<h3><span style="font-weight: bold;">Getting started</span><br>
+</h3>
+<a href="install.html">Installation guide</a><br>
+<br>
+For all user interfaces the functions of HALO are described in the documentation on a step-by-step basis for an example use case (half-lives in mouse fibroblasts) [see use case documentation for the <a href="../gui/index_usecase.html" target="_top">GUI</a>, <a href="../cmdline/index_usecase.html" target="_top">commandline version</a> and <a href="../javaapi/index_usecase.html" target="_top">Java API</a>]. 
+The data for this use case can be downloaded together with the HALO distribution or separately (see <a href="http://www.bio.ifi.lmu.de/software/HALO#download">Downloads</a>).
+<br>
+<br>
+Alternatively you can test the GUI with an example session which automatically performs the most important steps with HALO. Simply download the session from the <a href="http://www.bio.ifi.lmu.de/software/HALO#download">Download</a> section and load it by choosing the Load session option from the Session menu in the top left of GUI. All steps will then be performed automatically without requiring any more input from your side.
+<br>
+<br>
+For a short introduction to the GUI see the <a target="_top" href="../gui/index_firststeps.html">first steps</a> guide of the graphical user interface.<br>
+<br>
+<b>Note:</b> Per default the GUI and commandline version use a maximum heap size (avaliable RAM) of 1024MB. If you want to increase this, you can set the maximum heap size using the -Xmx option of Java, e.g.:
+<code>gui.sh -Xmx2000M</code>.
+<br>
+
+<h3><span style="font-weight: bold;">Parts of the package</span><br>
+</h3>
+The three main parts of the software package are documented in detail and can be accessed via the 
+navigation panel above or the following links.<br>
+<ul>
+  <li><a target="_top" href="../indexgui.html">Graphical user interface</a> (also accessible via webstart version)</li>
+  <li><a target="_top" href="../indexcmd.html">Command line tools</a></li>
+  <li><a target="_top" href="../indexapi.html">Java API</a><br>
+  </li>
+</ul>
+<h3><span style="font-weight: bold;"><br>
+Methods and Materials</span></h3>
+This section provides an overview over all parts provided by HALO, with information about methods used 
+for the software package. You can always access this part of the documentation over the 
+navigation panel on the left.<br>
+<ul>
+  <li><a href="overview.html#methods">Methods</a> - describes the process of data 
+  creation and how HALO allows you to assess and improve the quality of the transcript measurements.</li>
+  <li><a href="overview.html#norm">Normalization</a> - explains how the data can be normalized using 
+  HALO.</li>
+  <li><a href="overview.html#half">Half-life calculation</a> - shows an overview over the available methods 
+  for half-life calculation and how they should be used.</li>
+</ul>
+<h3>Additional information and features<br>
+</h3>
+<ul>
+  <li><a href="fileformats.html">File formats</a> - The data files used with HALO have to be of a 
+  certain file format.</li>
+  <li><a href="userdef.html">User defined classes</a> - The HALO Java framework can be extended by classes 
+  defined by the user for custom implementation of normalization or half-life calculation methods.</li>
+  <li><a target="content" href="external.html">External libraries</a> - External software libraries used by HALO.</li>
+</ul>
+<br>
+<!-- footer start -->
+<br/><br/>
+<hr size="1"/>
+<div style="font-size:small"><a target="_blank" href="http://www.bio.ifi.lmu.de/software/HALO/">HALO</a> documentation</div>
+<!-- footer end -->
+
+</body>
+</html>

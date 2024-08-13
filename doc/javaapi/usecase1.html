@@ -1,0 +1,231 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  
+  <title>Sample Use Case 1: Loading and filtering data</title>
+  <link rel="StyleSheet" href="../styles.css" type="text/css">
+  
+  
+  <script language="JavaScript" src="../frames.js"></script>
+</head>
+<body onload="ensureframes()">
+<h3>Sample
+Use Case 1: Loading and filtering data<br>
+</h3>
+This sample use case shows you how to load and filter data from microarray or mRNA-seq experiments with the HALO API. Below you can find a detailed description of each necessary step for this procedure as well as the corresponding code snippet. The complete source code of this use case example is available in the package <code>halo.examples</code> contained in the <code>src/</code> directory. 
+<br>
+In order to extract your mRNA level measurements from your data files you first have to load these. Afterwards you have the possibility to load additional files that contain attributes corresponding to your probesets or protein sequences. You can filter your data with a set of different filtering methods and also provide an output file with the filtered probesets. For each of these steps an example in source code is given in this sample use case. For more detailed information of all methods and classes please see the <a href="../javadoc/index.html" target="_blank">JavaDocs</a>.<br>
+<br>
+You can find the data used as examples in folder <code>HALO/data</code>.
+<br>
+<br><span style="font-weight: bold;">Important note:</span>
+
+All variable parameters (methods, thresholds, etc) that are used in this example are chosen <span style="text-decoration: underline;">arbitrarily</span> and only for description purposes. These parameters have to be chosen carefully depending on the data and goals for practical uses.<br>
+<br>
+<span style="font-weight: bold;">Table of contents:</span><br>
+<ul>
+  <li><a href="#loadexp">Loading expression data</a></li>
+  <li><a href="#loadatt">Loading additional attributes</a></li>
+  <li><a href="#filt">Filtering data</a></li>
+   <li><a href="#output">Output data</a></li>
+   <li><a href="#outp">Output</a></li>
+</ul>
+<br>
+<span style="font-weight: bold;"><a name="loadexp"></a><span style="text-decoration: underline;">Loading expression data</span></span><span style="text-decoration: underline;"></span><br>
+<span style="text-decoration: underline;"></span><span style="text-decoration: underline; font-weight: bold;"></span><br>
+<span style="text-decoration: underline; font-weight: bold;"></span>
+
+The first important step in data preparation is the loading of probesets and corresponding RNA measurements 
+from a file containing expression data. For details on the requested input file format please see 
+<a href="../main/fileformats.html">File formats</a>. For this example the file named <code>data/Example_mouse.txt</code>
+is used as input. From the file a <code>Data</code>-object is created, where all necessary information is 
+stored.</br>
+The example also shows how to load not only RNA measurements but also additional attributes that are part of 
+the original datafile. 
+<br>
+<br>
+<table style="text-align: left; width: 100%;" border="0" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="width: 10px;"></td>
+      <td><code>
+ 		//Define the names of columns containing newly transcribed RNA<br>
+		ArrayList&lt;String&gt; colNew = new ArrayList&lt;String&gt;();</br>
+		colNew.add("E1");</br>
+		colNew.add("E2");</br>
+		colNew.add("E3");</br>
+</br>
+		//Define the names of columns containing pre-existing RNA</br>
+		ArrayList&lt;String&gt; colPre = new ArrayList&lt;String&gt;();</br>
+		colPre.add("U1");</br>
+		colPre.add("U2");</br>
+		colPre.add("U3");</br>
+		</br>
+		//Define the names of columns containing total RNA</br>
+		ArrayList&lt;String&gt; colTot = new ArrayList&lt;String&gt;();</br>
+		colTot.add("T1");</br>
+		colTot.add("T2");</br>
+		colTot.add("T3");</br>
+		</br>
+		 //Define the name of the column containing the gene names</br>
+        ArrayList&lt;String&gt; geneAtt = new  ArrayList&lt;String&gt;();</br>
+        geneAtt.add("Gene Symbol");</br>
+        //Is the data in log scale? <br>
+        boolean log = false;<br>
+        </br>
+		//Read in the data and load attributes in parallel</br>
+        Data data = new Data("data/Example_mouse.txt", colTot, colNew, colPre, geneAtt, log);</br> 
+ </code></td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+
+<span style="font-weight: bold;"><a name="loadatt"></a><span style="text-decoration: underline;">Loading additional attributes (optional)</span></span><br><br>
+Besides RNA measurements you can also load attributes as gene names or present/absent calls that may be needed for later procedures or that you want to be preserved in the output. 
+You can either load these attributes directly with your data if they are contained in the input file, or 
+load them separately. This step can thus be performed at any time point. In the example below the original file 
+"data/Example_mouse.txt" serves as source for the additional attributes that contain present calls. There is 
+also the possibility to load attributes from a separate file (shown in the last comment below). 
+This file is then loaded to complete the previously created <code>Data</code>-object. It is always 
+advisable to load present calls separately instead of with other attributes, since they are handled internally 
+differently. For this reason there exist two methods for each attribute loading procedure, one for 
+regular attributes, and one for present/absent calls or similar attributes.<br> 
+Please note that you don't have to load sequence files prior to using them for evaluation.
+<br>
+<br>
+<table style="text-align: left; width: 100%;" border="0" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="width: 10px;"></td>
+      <td> <code>
+        </br>
+        	//Define the names of columns containing present call attributes</br>
+		ArrayList&lt;String&gt; colAtt = new ArrayList&lt;String&gt;();</br>
+		String[] attributes = new String[]{"Call_T1", "Call_T2", "Call_T3", "Call_E1", 
+		"Call_E2", "Call_E3","Call_U1", "Call_U2", "Call_U3"};</br>
+        for(String t: attributes) {</br>
+            colAtt.add(t);</br>
+        }<br>
+        <br>
+        //Load present calls separately from the data file<br>
+        data.loadPresentCallsFromDatafile(colAtt);<br>
+        </br>
+		//load attributes from the given file</br>
+//		data.addAttributes(ATTRIBUTEFILE);</br>
+      </code></td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+
+<span style="font-weight: bold;"><a name="filter"></a><span style="text-decoration: underline;">Filtering</span></span><br>
+<br>
+In order to filter the data we have loaded we want to perform a filtering step consisting of several subsequent filtering methods. 
+In this sample filtering according to a threshold as well as to present/absent calls are chosen as examples. Each method can be repeated as often as desired, since a new <code>Data</code>-object is created after every filtering step that can be used for subsequent analysis and even more filtering methods. 
+<br>
+<br>
+<table style="text-align: left; width: 100%;" border="0" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+
+      <td style="width: 10px;"></td>
+      <td><code>
+     	//Filter according to a given threshold</br>
+		double threshold  = 50;</br>
+		data = Filter.filter(data, threshold);</br>
+		</br>
+		String call       = "A"; //The present/absent call used for filtering</br>
+		int    callNumber = 1;   //The number of appearances of this call requested to discard the probeset</br>
+		</br>
+		//Filter according to present/absent calls</br>		
+		data = Filter.filterAbsent(data, colAtt, call, callNumber);</br>
+		data = Filter.filterAbsent(data, colAtt, "M", callNumber);</br>
+		//Filtering for probe sets with no annotated gene name</br>
+		data = Filter.filterAbsent(data, geneAtt, "---", callNumber);</br>
+      </code></td>
+    </tr>
+  </tbody>
+
+</table>
+<br>
+<br>
+<span style="font-weight: bold;"><a name="output"></a><span style="text-decoration: underline;">Output data</span></span><br>
+<br>
+After having filtered the data you may want to provide the new probsets and a subset or complete set of RNA measurement values and attributes as an output file. This is performed in the below example.
+<br>
+<br>
+<table style="text-align: left; width: 100%;" border="0" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="width: 10px;"></td>
+      <td><code>
+      //choose name for output</br>
+		String output = "Example_mouse_filtered.txt";</br>
+		</br>
+		//write output</br>
+		colAtt.addAll(geneAtt);</br>
+        data.writeOutput(output, colTot, colNew, colPre,colAtt );</br>
+      </code></td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+
+<span style="font-weight: bold;"><a name="outp"></a><span style="text-decoration: underline;">Output</span></span><br>
+<br>
+The output produced by HALO should look like this:
+<br>
+<br>
+<table style="text-align: left; width: 100%;" border="0" cellpadding="2"
+	cellspacing="2">
+	<tbody>
+		<tr>
+			<td style="width: 10px;"></td>
+			<td><code> Loading data...</br>
+			Done loading data.</br>
+			You have 31451 probesets.</br>
+			------------------------------</br>
+			Loading attributes...</br>
+			Done loading attributes.</br>
+			------------------------------</br>
+			Filtering data...</br>
+			Done filtering data.</br>
+			You have 11031 probesets.</br>
+			------------------------------</br>
+			Filtering data...</br>
+			Done filtering data.</br>
+			You have 10984 probesets.</br>
+			------------------------------</br>
+			Filtering data...</br>
+			Done filtering data.</br>
+			You have 10937 probesets.</br>
+			------------------------------</br>
+			Filtering data...<br>
+			Done filtering data.<br>
+			You have 10731 probesets.<br>
+			------------------------------</code></td>
+		</tr>
+	</tbody>
+</table>
+<br>
+The following file should be produced:
+<br>
+<ul>
+	<li> <code>Example_mouse_filtered.txt</code></li>
+</ul>
+<br>
+
+<!-- footer start -->
+<br/><br/>
+<hr size="1"/>
+<div style="font-size:small"><a target="_blank" href="http://www.bio.ifi.lmu.de/software/HALO">HALO</a> documentation</div>
+
+<!-- footer end -->
+
+</body>
+</html>

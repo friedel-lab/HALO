@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  
+  <title>Quality control menu</title>
+  <link rel="StyleSheet" href="../styles.css" type="text/css">
+  
+  <script language="JavaScript" src="../frames.js"></script>
+</head>
+<body onload="ensureframes()">
+<h2>The quality control menu</h2>
+The quality control menu provides methods for calculating the average uracil number for your data and bias correcting. 
+Additionally you can assess the calculation of probeset quality control scores here directly, 
+without having to filter the data according to it. 
+
+<h3><span style="font-weight: bold;">Calculation of Uracil number</span></h3>
+In order to use this method you have to first load gene names and sequences for your data. This method calculates 
+the number of uracils in each sequence and plots it against the logarithm of the ratio of either newly transcribed to 
+total RNA, pre-existing to total RNA or newly transcribed to pre-existing RNA. Besides a plot displaying the correlation 
+of these two values you will also be provided with the average number of uracils in all sequences and 
+the average ratio. You can also save the plotting script. 
+
+<h3><span style="font-weight: bold;">Correction for bias in capture-rates</span></h3>
+<a href="http://www.r-project.org/">R</a> has to be installed to be able to use this method. You can either enter the path to the directory where you have 
+installed R in the <a href="menusettings.html">Settings</a> menu or directly after starting this method. <br>
+For the calculation of the correlation between number of uracils and ratio you can either load previously saved 
+plotting information from the calculation of uracil number, or simply reproduce this step when asked. <br>
+You can choose between three methods for calculating the correlation: <span style="font-weight: bold;">Spearman</span> (default),
+<span style="font-weight: bold;">Pearson</span> and <span style="font-weight: bold;">Kendal</span>. After choosing a method the 
+correlation coefficient will be calculated. <br>
+In a second step the loess regression will be used to calculate the bias and resulting correction factors for each probeset. 
+You can plot the corrected values against number of uracils, and also repeat normalization and half-life calculation 
+with these corrected values. If you have not performed half-life calculation previously, you can also enter your 
+parameters now. There is also the possibility to recreate plots with the corrected values for normalization and for 
+half-life calculation.
+
+<h3><span style="font-weight: bold;">Calculate the probeset quality control scores</span></h3>
+You can also assess the distance of your data points to the linear regression line by 
+calculating the probeset quality control scores. These scores can be used for filtering
+ (see <a href="menufilter.html">Filtering menu</a> for details), 
+for which you can access the calculation directly over the filtering sub-panel, or in 
+this menu, where you can use the scores to plot a histogram or simply save them to a 
+file.
+
+
+<!-- footer start -->
+<br/><br/>
+<hr size="1"/>
+<div style="font-size:small"><a target="_blank" href="http://www.bio.ifi.lmu.de/software/HALO/">HALO</a> documentation</div>
+<!-- footer end -->
+
+</body>
+</html>

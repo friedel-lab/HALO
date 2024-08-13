@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  
+  <title>Half-life calculation menu</title>
+  <link rel="StyleSheet" href="../styles.css" type="text/css">
+  
+  <script language="JavaScript" src="../frames.js"></script>
+</head>
+<body onload="ensureframes()">
+<h2>Half-life calculation with the GUI</h2>
+After loading and normalizing the data you can calculate the half-lives. 
+
+<h3><span style="font-weight: bold;">Extending the menu</span></h3>
+You have to load the data and perform normalization before you can access the half-life 
+calculation menu. After doing so you can extend the panel through simply clicking on the 
+menu labeled <span style="font-weight: bold;">Half-Life calculation</span> in the <b>Half-Life</b>
+menu of the menu bar or by pressing Ctrl+H.
+
+<h3><span style="font-weight: bold;">Adding Half-life calculations</span></h3>
+In the current version (1.3) three methods for half-life calculations are implemented. You 
+can include as many different methods as you want through subsequent clicking on the 
+<span style="font-weight: bold;">Add calculation</span> button. A popup dialog will 
+appear where you can choose between the three methods:
+
+<ul>
+	<li><span style="font-weight: bold;">Newly transcribed/Total based</span><br>
+	This method uses the ratio of newly transcribed to total RNA and the correction factor c_l for half-life
+	calculation.</li>
+	
+	<li><span style="font-weight: bold;">Pre-existing/Total based</span><br>
+	For this method the ratio of pre-existing RNA to total is used, as well as the correction 
+	factor c_u.</li>
+	
+	<li><span style="font-weight: bold;">Newly transcribed/Pre-existing based</span><br>
+	The last method uses the ratio of newly transcribed to pre-existing RNA and the correction factor c_lu.</li>
+</ul>
+
+You can also define two additional parameters:
+
+<ul>
+	<li><span style="font-weight: bold;">Labeling time</span><br>
+	In the field <span style="font-weight: bold;">Enter time</span> you can enter a custom labeling time 
+	for each calculation. You can also enter a constant labeling time in the <a href="menusettings.html">
+	Settings</a> menu that will then be used for every calculation.</li>
+	
+	<li><span style="font-weight: bold;">Replicate</span><br>
+	Instead of using an average over all replicates (as defined in normalization) you can also use a specific 
+	replicate. This is optional; if you prefer the average over all replicates you can just leave the field 
+	empty. Again you can enter a constant replicate in the <a href="menusettings.html">Settings</a> menu.</li>
+</ul>
+
+Please note that you can not change the half-life methods defined for normalization if you chose 
+median-based normalization, because this method only provides one correction factor instead of all three.<br>
+An overview over all your chosen parameters and methods can be accessed via the <span style="font-weight: bold;">
+Display choices</span> button. In order to start the calculation you have to click the <span style="font-weight: bold;">Start</span> button.
+
+<h3><span style="font-weight: bold;">Plotting the results</span></h3>
+After calculating the half-lives you can plot the results. On the x-axis the half-lives are listed, while the 
+y-axis displays the relative frequency of each half-life. For each method that you used, a different 
+graph will be generated. You can save a plotting file that contains all values for all methods.
+ 
+<h3><span style="font-weight: bold;">Saving the half-life values</span></h3>
+You can save the calculated half-life values via the <span style="font-weight: bold;">Save</span> button. You 
+can choose if you want to save only values from one calculation, in combination with one or more attributes,
+or save all calculations without attributes. For this last method you can choose between three types of values; 
+the half-life values, the ratio values used for these or both. For details on the output format see the 
+<a href="../fileformats.html">File formats</a> page. 
+
+
+
+<!-- footer start -->
+<br/><br/>
+<hr size="1"/>
+<div style="font-size:small"><a target="_blank" href="http://www.bio.ifi.lmu.de/software/HALO/">HALO</a> documentation</div>
+<!-- footer end -->
+
+</body>
+</html>

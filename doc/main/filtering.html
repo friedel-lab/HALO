@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  
+  <title>Measured transcript levels</title>
+  <link rel="StyleSheet" href="../styles.css" type="text/css">
+  
+  <script language="JavaScript" src="../frames.js"></script>
+</head>
+<body onload="ensureframes()">
+<h2>Measured transcript levels</h2>
+As more and more data becomes available, we are able to gain insight into complex biological processes. 
+On the level of RNA transcripts it has been shown that knowledge about the half-life of these transcripts 
+can help us understand the regulation of biological processes, without being limited to a specific set 
+of genes and thus maybe missing important information (<a href="../references.html#tag11">Yang et al, 2003</a>; 
+<a href="../references.html#tag8">Narsai et al, 2007</a>; <a href="../references.html#tag5">Friedel et al</a>,
+ 2009). <br>
+Previously, RNA half-lives were determined using a 
+technique that blocks transcription and monitors the decay of RNA over time 
+(<a href="../references.html#tag1">Bernstein et al., 2002</a>; <a href="../references.html#tag9">Raghavan et al., 2002</a>; 
+<a href="../references.html#tag11">Yang et al., 2003</a>; <a href="../references.html#tag8">Narsai et al, 2007</a>). 
+However, this method does 
+not lead to a high accuracy, since it has several drawbacks. While the blocking of transcription here
+ is assumed not to affect transcript half-lives, it has been shown that individual transcripts can be 
+stabilized as a consequence of a stress response such as transcriptional arrest 
+(<a href="../references.html#tag6">Gorospe et al., 1998</a>; <a href="../references.html#tag2">Blattner et al., 2000</a>). Also it has been shown 
+that medium-to-long-lived half-lives can not be determined precisely with this method 
+(<a href="../references.html#tag5">Friedel et al, 2009</a>). 
+<br>
+In order to avoid these disadvantages and to improve the accuracy of half-life calculation a new method 
+has been developed, which is based on labeling of newly synthesized RNA with 4-thiouridine (4sU)
+(<a href="../references.html#tag7">Kenzelmann et al., 2007</a>; <a href="../references.html#tag3">
+D&ouml;lken et al., 2008</a>). The 
+4sU can be introduced into the transcription process over the nucleoside salvage pathway and thus gets 
+directly incorporated into newly transcribed RNA. 
+This labeling makes it possible to distinguish between pre-existing RNA (unlabeled RNA) and newly 
+transcribed RNA (labeled RNA) without disrupting the transcription process. <br>
+The separation of these two groups in a thiol-mediated way and subsequent quantification with microarrays 
+or mRNA-seq then serves as basis of half-life calculation, which can be performed based on the ratios of 
+pre-existing to total RNA, newly transcribed to total RNA or newly transcribed to pre-existing RNA with high accuracy.<br>
+<br>
+<h3>Filtering your data</h3>
+HALO is a software framework that provides methods for the calculation of half-lives from such microarray 
+or mRNA-seq data, but also allows you to improve data quality through the introducing of filtering steps.
+You can thus exclude unreliable probesets based on present/absent calls, low expression values or the 
+probeset quality score. This last method can be performed only after normalization, since it is based on 
+the distance of the RNA quantification values to the regression line. The higher the PQS, the lower the 
+distance to the linear regression line and thus the better the quality. <br>
+
+<h3>Assessing quality of data labeling</h3>
+HALO also provides the possibility to assess the quality of data labeling and RNA quantification. 
+The insufficient labeling of short transcripts with 4sU, caused by a low content of uracil, could 
+induce reduced capture rates for these transcripts. As a consequence, a bias in calculating the 
+half-lives for these emerges. You can test for such a bias based on the number of uracils in the 
+RNA sequence compared to the ratio of transcript to total RNA. If a bias is present, a correlation 
+between these two values should be observed.
+
+
+
+<!-- footer start -->
+<br/><br/>
+<hr size="1"/>
+<div style="font-size:small"><a target="_blank" href="http://www.bio.ifi.lmu.de/software/HALO/">HALO</a> documentation</div>
+<!-- footer end -->
+
+</body>
+</html>

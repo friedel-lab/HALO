@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  
+  <title>Overview</title>
+  <link rel="StyleSheet" href="../styles.css" type="text/css">
+  
+  <script language="JavaScript" src="../frames.js"></script>
+</head>
+<body onload="ensureframes()">
+<h2><a name="methods"></a>Methods</h2>
+<h3>RNA labeling</h3>
+Previously, RNA half-lives were determined using a 
+technique that blocks transcription and monitors the decay of RNA over time 
+(<a href="../references.html#tag1">Bernstein et al., 2002</a>; <a href="../references.html#tag10">Raghavan et al., 2002</a>; 
+<a href="../references.html#tag12">Yang et al., 2003</a>; <a href="../references.html#tag9">Narsai et al, 2007</a>). 
+However, this method does 
+not lead to a high accuracy, since it has several drawbacks. While the blocking of transcription here
+ is assumed not to affect transcript half-lives, it has been shown that individual transcripts can be 
+stabilized as a consequence of a stress response such as transcriptional arrest 
+(<a href="../references.html#tag6">Gorospe et al., 1998</a>; <a href="../references.html#tag2">Blattner et al., 2000</a>). Also it has been shown 
+that medium-to-long-lived half-lives can not be determined precisely with this method 
+(<a href="../references.html#tag5">Friedel et al, 2009</a>). 
+<br>
+In order to avoid these disadvantages and to improve the accuracy of half-life calculation a new method 
+has been developed, which is based on labeling of newly synthesized RNA with 4-thiouridine (4sU)
+(<a href="../references.html#tag7">Kenzelmann et al., 2007</a>; <a href="../references.html#tag3">
+D&ouml;lken et al., 2008</a>). The 
+4sU can be introduced into the transcription process over the nucleoside salvage pathway and thus gets 
+directly incorporated into newly transcribed RNA. 
+This labeling makes it possible to distinguish between pre-existing RNA (pre-existing RNA) and newly 
+transcribed RNA (labeled RNA) without disrupting the transcription process. <br>
+The separation of these two groups in a thiol-mediated way and subsequent quantification with microarrays 
+or mRNA-seq then serves as basis of half-life calculation, which can be performed based on the ratios of 
+pre-existing to total RNA, newly transcribed to total RNA or newly transcribed to pre-existing RNA with high accuracy. It has been shown 
+that transcript half-lives can help us to understand the regulation of biological processes on 
+a general level without being limited to specific conditions and, thus, maybe missing important
+information (<a href="../references.html#tag12">Yang et al, 2003</a>; 
+<a href="../references.html#tag9">Narsai et al, 2007</a>; <a href="../references.html#tag5">Friedel et al, 2009</a>)<br>
+<br>
+<h3>Filtering your data</h3>
+HALO is a software framework that provides methods for the calculation of half-lives from such microarray 
+or mRNA-seq data, but also allows you to improve data quality through the introducing of filtering steps.
+You can thus exclude unreliable probesets based on present/absent calls, low expression values or the 
+probeset quality score. This last method can be performed only after normalization, since it is based on 
+the distance of the RNA quantification values to the regression line. The higher the PQS, the lower the 
+distance to the linear regression line and thus the better the quality. <br>
+
+<h3>Assessing quality of data labeling</h3>
+HALO also provides the possibility to assess the quality of data labeling and RNA quantification. 
+The insufficient labeling of short transcripts with 4sU, caused by a low content of uracil, could 
+induce reduced capture rates for these transcripts. As a consequence, a bias in calculating the 
+half-lives for these emerges. You can test for such a bias based on the number of uracils in the 
+RNA sequence compared to the ratio of transcript to total RNA. If a bias is present, a correlation 
+between these two values should be observed. If necessary such a bias can be corrected with the method of 
+<a href="../references.html#tag8">Miller et al. (2009)</a> implemented in HALO.
+
+<h2><a name="norm"></a>Normalization</h2>
+Normalization of transcript quantification data is another possibility to control the quality of the 
+data. Based on the relationship between the three groups of RNA, pre-existing, newly transcribed and total RNA, a 
+simple linear regression can be performed for normalization 
+(<a href="../references.html#tag3">D&ouml;lken et al., 2008</a>). Since pre-existing and newly transcribed transcript 
+levels added up should equal total RNA levels, a negative linear correlation should be observed between 
+the ratios of newly synthesized/total and pre-existing/total RNA. <br>
+If only two of the three RNA fractions have been measured, data can be normalized based on the median 
+half-life.
+
+<h2><a name="half"></a>Half-life calculation</h2>
+RNA half-lives can be calculated with HALO using an exponential decay model either for individual 
+replicates or ratios averaged across all replicates. Three possible methods exist for the calculation 
+of half-lives, based on the newly transcribed/total RNA, pre-existing/total RNA and the newly transcribed/pre-existing RNA ratios, 
+respectively. Among these, the method based on newly transcribed (=labeled) to total RNA ratio has an overall high 
+accuracy, while the method using pre-existing/total RNA shows high precision for short transcripts, while 
+being unreliable for medium-to-long-lived transcripts (<a href="../references.html#tag4">Friedel 
+and D&ouml;ken, 2008</a>). The ratio of newly transcribed to pre-existing RNA as a method 
+combines the good properties of the two other calculation methods.  
+
+<!-- footer start -->
+<br/><br/>
+<hr size="1"/>
+<div style="font-size:small"><a target="_blank" href="http://www.bio.ifi.lmu.de/software/HALO/">HALO</a> documentation</div>
+<!-- footer end -->
+
+</body>
+</html>

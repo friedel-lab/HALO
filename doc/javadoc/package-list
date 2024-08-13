@@ -1,0 +1,14 @@
+halo.data
+halo.data.biascorrection
+halo.data.dataExceptions
+halo.examples
+halo.halflife
+halo.halflife.alpha
+halo.normalization
+halo.tools
+halo.userinterface.cmdline
+halo.userinterface.cmdline.cmdexceptions
+halo.userinterface.gui
+halo.userinterface.gui.graphhandler
+halo.userinterface.gui.guitools
+halo.userinterface.gui.session

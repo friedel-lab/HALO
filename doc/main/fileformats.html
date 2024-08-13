@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  
+  <title>File formats</title>
+  <link rel="StyleSheet" href="../styles.css" type="text/css">
+  
+  <script language="JavaScript" src="../frames.js"></script>
+</head>
+<body onload="ensureframes()">
+<h2>File format descriptions</h2>
+Below you can find a short description of the file formats used for and produced by HALO. Note that &lt;TAB&gt; represents the tab character.
+ 
+<h3>Overview</h3>
+<ul>
+  <li><a href="#input"><span style="font-weight:bold;">Input files:</span></a></li>
+  <li><a href="#data">Data from microarray/RNA-seq experiments</a></li>
+  <li><a href="#fasta">Multiple fasta files</a></li>
+  <li><a href="#attributes">Attribute files</a></li><br>
+  <li><a href="#output"><span style="font-weight:bold;">Output files:</span></a></li>
+  <li><a href="#filter">Filtered data</a></li>
+  <li><a href="#halflife">Half-life/Ratio values</a></li>
+  <li><a href="#halfAttr">Half-lives with attributes</a></li>
+  <li><a href="#quality">Probeset quality scores</a></li>
+  <li><a href="#normal">Normalization plotting results</a></li>
+</ul>
+
+
+<h3><a name="input"></a><span style="font-weight: bold;">Input files</span></h3>
+<br>
+<h4><a name="data"></a><span style="font-weight: bold;">Data from microarray or RNA-seq experiments</span></h4>
+The data from your microarray or RNA-seq experiments can be loaded into HALO as a single '.txt'-file of the 
+following format:
+<br>
+<br>
+<code>
+##############################################################################<br>
+#########Information that is no data has to be masked with a sharp############<br>
+##############################################################################<br>
+####First line after the commentary has to contain labels for data columns####<br>
+probeset_id&lt;TAB&gt;label1&lt;TAB&gt;label2&lt;TAB&gt;label3&lt;TAB&gt;....&lt;TAB&gt;labeln<br>
+</code><br>
+After the header the values are given, tab separated like in the following example:<br><br>
+<code>
+123456&lt;TAB&gt;140.014&lt;TAB&gt;30.12&lt;TAB&gt;213.5&lt;TAB&gt;...&lt;TAB&gt;54.12
+</code><br>
+<br>
+There can be only one probeset id per line.<br>
+
+<h4><a name="fasta"></a><span style="font-weight: bold;">Multiple fasta files</span></h4>
+Gene sequences have to be provided in a multiple fasta file, where one column in the fasta header describes the 
+gene name. For an example of such a file see below.
+<br>
+<br>
+<code>
+> gene name|attribute|description|another attribute<br>
+ATCGTCAGAGATTATTACAGATACATTGAGATGAGTACGATGATAATGACATG<br>
+</code><br>
+The sequence should be provided without any newline characters. It does not matter which column of the header 
+contains the gene name, but it has to be the same column for every entry.<br><br>
+
+<h4><a name="attributes"></a><span style="font-weight: bold;">Attribute files</span></h4>
+You can load additional attributes corresponding to your data. These files can contain one or more attributes, 
+but they have to contain one column with probeset ids for mapping the attributes with the data. An example 
+attribute file looks like this:<br><br>
+<code>
+############################################################################<br>
+##########################Commentary can be given###########################<br>
+############################################################################<br>
+probeset_id&lt;TAB&gt;attribute1&lt;TAB&gt;attribute2&lt;TAB&gt;....&lt;TAB&gt;attributen<br>
+123456&lt;TAB&gt;gene1&lt;TAB&gt;A&lt;TAB&gt;...&lt;TAB&gt;1.23<br>
+</code>
+<br>
+The order of the columns is not important, but you have to define the label of the probeset_ids previously if 
+it is not the same as in the original data.<br><br>
+
+
+<h3><a name="output"></a><span style="font-weight: bold;">Output files</span></h3>
+
+<h4><a name="filter"></a><span style="font-weight: bold;">Filtered data</span></h4>
+The filtered data is in the same format as the <a href=#data>input data</a>. There is a header produced and the columns are 
+put to the output file in the order probeset id, total RNA replicates, newly transcribed RNA replicates, pre-existing RNA replicates, 
+attributes.
+
+<h4><a name="halflife"></a><span style="font-weight: bold;">Half-life/Ratio values</span></h4>
+When you have calculated the half-lives the program offers you three possible ways of saving: You can either 
+save only the half-lives, only the ratios on which the half-lives are based, or both.<br>
+<br>
+<b>Half-lives and Ratios only:</b><br>
+<code>spotid&lt;TAB&gt;half-life (method1)&lt;TAB&gt;half-life (method2)<br>
+123456&lt;TAB&gt;1.23&lt;TAB&gt;2.34<br></code>
+<br>
+<b>Both half-lives and Ratios:</b><br>
+Here you are presented with half-life values first and ratio values second, separated by a <code>&lt;TAB&gt;</code>.
+<br>
+<br>
+<code>spotid&lt;TAB&gt;half-life (method1)&lt;TAB&gt;half-life (method2)&lt;TAB&gt;method1 (ratios)&lt;TAB&gt;method2 (ratios)<br>
+12345&lt;TAB&gt;1.23&lt;TAB&gt;2.34&lt;TAB&gt;3.45&lt;TAB&gt;4.56<br></code>
+
+<h4><a name="halfAttr"></a><span style="font-weight: bold;">Half-lives with attributes</span></h4>
+You can also save the results of a single half-life calculation, combined with one or more attributes. The file 
+format of these output files looks like this:<br>
+<br>
+<code>spotid&lt;TAB&gt;half-life&lt;TAB&gt;attr_1&lt;TAB&gt;...&lt;TAB&gt;attr_n<br>
+12345&lt;TAB&gt;1.23&lt;TAB&gt;gene_1&lt;TAB&gt;...&lt;TAB&gt;A<br>
+</code>
+<br>
+
+<h4><a name="quality"></a><span style="font-weight: bold;">Probeset quality scores</span></h4>
+You can calculate the probeset quality score for each probeset. The output is structured <code>
+spotid&lt;TAB&gt;value</code>, e.g.:<br>
+<br>
+<code>123456&lt;TAB&gt;0.123</code>
+
+<h4><a name="normal"></a><span style="font-weight: bold;">Normalization plotting file</span></h4>
+HALO allows you not only to plot your normalization results, but also save the plotting information in a 
+file for plotting with a program of your choice. Normalization plot display two types of information: 
+the data points in a scatter plot and the linear regression line. Since these two types of values seldom 
+have overlapping x-values, the plotting file is NOT structured in the usual <code>x-value&lt;TAB&gt;y1-value
+&lt;TAB&gt;y2-value</code>, but instead can be separated into two parts. In the first part you will find 
+the data for the scatter-plot, structured as <code>x-value&lt;TAB&gt;y-value</code>, and after that 
+the data values for the regression line are displayed, structured in the same way. You can easily distinguish 
+between the two parts of the files through a header line inserted before each part. The file will look 
+something like this:<br><br>
+
+<code>#Data points:x&lt;TAB&gt;y<br>
+1.2155489028028954&lt;TAB&gt;1.0138011284375397<br>
+2.3153839627405824&lt;TAB&gt;0.9239562391183962<br>
+#Regression line:x&lt;TAB&gt;y<br>
+0.0&lt;TAB&gt;0.07405405303601431<br>
+0.0010&lt;TAB&gt;0.07483151974610898<br>
+0.0020&lt;TAB&gt;0.07560898645620365<br>
+0.0030&lt;TAB&gt;0.07638645316629832<br>
+0.0040&lt;TAB&gt;0.07716391987639298<br>
+0.0050&lt;TAB&gt;0.07794138658648765<br>
+0.0060&lt;TAB&gt;0.07871885329658232
+</code>
+<br>
+You can now go on and parse the two parts into separate files or a format fitting your needs.
+
+<!-- footer start -->
+<br/><br/>
+<hr size="1"/>
+<div style="font-size:small"><a target="_blank" href="http://www.bio.ifi.lmu.de/software/HALO/">HALO</a> documentation</div>
+<!-- footer end -->
+
+</body>
+</html>

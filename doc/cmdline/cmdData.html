@@ -1,0 +1,205 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>Command line tools - Loading data</title>
+  <link rel="StyleSheet" href="../styles.css" type="text/css">
+<SCRIPT LANGUAGE="JavaScript" SRC="../frames.js"></SCRIPT></head>
+<body onload="ensureframes()">
+<h2>Command line tools - Loading data</h2>
+<br>
+The commands necessary for the loading of the data have to be used for every of the subsequent steps 
+provided by HALO. Below you find a list of necessary and optional flags that are needed for the extracting 
+of data from your datafile, as well as filtering it, evaluating it and printing it to an output file. 
+You can combine these flags with the subsequent commands in any order.
+<br><br>
+<h3>List of necessary flags</h3>
+
+<table style="text-align: left; width: 100%;" border="0" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+	    <td><code>-i</code></td>
+	    <td><code>inputfile</code></td>
+	    <td>A file containing expression data for newly transcribed, pre-existing and total RNA in different 
+	    columns; more than 1 replicate is possible</td>
+    </tr>
+    <tr>
+    	<td><code>-of</code></td>
+    	<td><code>outputfile</code></td>
+   	 	<td>The filename for the filtered data</td>
+    </tr>
+    <tr>
+    	<td><code>-f</code></td>
+    	<td><code>filtermethod</code></td>
+    	<td>One of several filtering methods that are used as follows: 'method=value', e.g. 
+    	threshold=50. For more methods see <a target="_blank" href="javadoc/index.html">JavaDocs</a>. 
+    	For usage of more than one method add another -f flag.</td>
+    </tr>
+    <tr>
+    	<td><code>-ct</code></td>
+    	<td><code>column labels</code></td>
+    	<td>The labels of the columns that contain expression data for total RNA; it is possible 
+    	to use only the labels of the wanted replicates. For more than one label please use ',' 
+    	as separation.</td>
+    </tr>
+    <tr>
+    	<td><code>-cn</code></td>
+    	<td><code>column labels</code></td>
+    	<td>Column labels for newly transcribed RNA; for details see '-ct'</td>
+    </tr>
+    <tr>
+    	<code><td><code>-cp</code></td>
+    	<td><code>column labels</code></td>
+    	<td>Column labels for pre-existing RNA; for details see '-ct'</td>
+    </tr>
+   </tbody>
+ </table>
+
+<h3>List of optional flags</h3>
+
+<table style="text-align: left; width: 100%;" border="0" cellpadding="2" cellspacing="2">
+  <tbody>
+  <tr>
+  	<td><code>-log</code></td>
+	<td><code>BOOLEAN</code></td>
+	<td>TRUE if your data is in logarithmic scale and values should be loaded
+as 2 to the power of [value].</td>
+  </tr>
+    <tr>
+    	<td><code>-ps</code></td>
+    	<td><code>column labels</code></td>
+    	<td>The label of the column containing the probeset_id; default = 'probeset_id'</td>
+    </tr>
+            </tr>
+        <tr>
+    	<td><code>-genelabel</code></td>
+    	<td><code>column label</code></td>
+    	<td>If your gene label is not 'gene_name' you have to call this flag with the correct attribute 
+    	label for genes.</td>
+    </tr>
+    <tr>
+    	<td><code>-cto</code></td>
+    	<td><code>column labels</code></td>
+    	<td>The labels of the columns containing total RNA that will be written into the output file</td>
+    </tr>
+    <tr>
+    	<td><code>-cno</code></td>
+    	<td><code>column labels</code></td>
+    	<td>Output labels for newly transcribed RNA</td>
+    </tr>
+    <tr>
+    	<td><code>-cpo</code></td>
+    	<td><code>column labels</code></td>
+    	<td>Output labels for pre-existing RNA</td>
+    </tr>
+    <tr>
+    	<td><code>-ca</code></td>
+    	<td><code>column labels</code></td>
+    	<td>Column labels for attributes from the original file, separated by ','</td>
+    </tr>
+        <tr>
+    	<td><code>-pc</code></td>
+    	<td><code>BOOLEAN</code></td>
+    	<td>TRUE if attributes with <code>-ca</code> are present/absent calls. This is necessary to speed up the
+    	loading procedure.</td>
+    </tr>
+        <tr>
+    	<td><code>-ca2</code></td>
+    	<td><code>column labels</code></td>
+    	<td>Column labels for attributes from the original file that will be loaded separately (e.g. if 
+    	present calls and other attributes should be loaded from the file, you should load them separately),
+    	separated by ','.</td>
+    </tr>
+        <tr>
+    	<td><code>-pc2</code></td>
+    	<td><code>BOOLEAN</code></td>
+    	<td>TRUE if second list of attributes are present calls</td>
+    </tr>
+    <tr>
+    	<td><code>-pqs</code></td>
+    	<td><code>filename</code></td>
+    	<td>Name of the file in which the quality control values will be written</td>
+    </tr>
+    <tr>
+    	<td><code>-pp</code></td>
+    	<td><code>BOOLEAN</code></td>
+    	<td>TRUE if histogram of probeset quality scores should be created after filtering with 
+    	probeset quality scores.</td>
+    </tr>
+        </tr>
+        <tr>
+    	<td><code>-R</code></td>
+    	<td><code>System path</code></td>
+    	<td>The path to your R bin directory, which is needed for flags <code>-correl</code> and <code>-bias</code>.</td>
+    </tr>
+        </tr>
+        <tr>
+    	<td><code>-correl</code></td>
+    	<td><code>method</code></td>
+    	<td>If you define this flag, a correlation coefficient will be calculated. In order for this to work you 
+    	have to use the <code>-ur</code>, <code>-ufo</code> and <code>-R</code> flags also. Allowed methods: 
+    	'spearman', 'pearson' or 'kendal'.</td>
+    </tr>
+   </tbody>
+ </table>
+
+
+<h3>Flags for data quality evaluation</h3>
+
+<table style="text-align: left; width: 100%;" border="0" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+    	<td><code>-map</code></td>
+    	<td><code>filename</code></td>
+    	<td>Name of the file containing more attributes that will be added to the data; 
+    	Structure of this file has to be: probeset ids in the first column, corresponding 
+    	attribute in the second column.The first line should describe the columns, e.g.: 
+    	'#spotid	attribute1'. You can give multiple attribute files separated by comma; 
+    	e.g. '-map filename1,filename2,filename3</td>
+    </tr>
+    <tr>
+    	<td><code>-uf</code></td>
+    	<td><code>filename</code></td>
+    	<td>Name of the fasta file containing the sequences corresponding to the data</td>
+    </tr>
+    <tr>
+    	<td><code>-uc</code></td>
+    	<td><code>column number</code></td>
+    	<td>Number of the column of the fasta header that contains the genename; e.g.'> 
+    	genename|attribute|attribute' would result in '-uc 1'.</td>
+    </tr>
+    <tr>
+    	<td><code>-ur</code></td>
+    	<td><code>method</code></td>
+    	<td>Either 'log(e'/n')', 'log(u'/n')' or 'log(e'/u')'; if -uf, -uc and -ur are 
+    	given the average uracil number and average defined ratio are calculated and a 
+    	file containing information for plotting is provided.</td>
+    </tr>
+    <tr>
+    	<td><code>-ufo</code></td>
+    	<td><code>filename</code></td>
+    	<td>Name of the output file for the plotting information (ratio and uracilnumber).</td>
+    </tr>
+    <tr>
+    	<td><code>-up</code></td>
+    	<td><code>BOOLEAN</code></td>
+    	<td>TRUE if plot about uracil number vs. ratio should be created.</td>
+    </tr>
+   </tbody>
+ </table>
+
+
+
+<h3>Example call</h3>
+<code>
+-i data.txt -f pqs=min -of output.txt -ct totalRNA2 -cp preexistingRNA2 -cn newlytranscribed_HumanExon2 -map genenames.txt  -uf genenames.fasta -uc 1 -ur log(e'/n') -pqs quality.txt -pp TRUE
+</code>
+<!-- footer start -->
+<br/><br/>
+<hr size="1"/>
+<div style="font-size:small"><a target="_blank" href="http://www.bio.ifi.lmu.de/software/HALO/">HALO</a> documentation</div>
+<!-- footer end -->
+
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  
+  <title>Data loading menu</title>
+  <link rel="StyleSheet" href="../styles.css" type="text/css">
+  
+  <script language="JavaScript" src="../frames.js"></script>
+</head>
+<body onload="ensureframes()">
+<h2>Loading the Data with the GUI</h2>
+The basis of half-life calculation is data from microarray or RNA-seq experiments. Before accessing and 
+using the methods provided by HALO you thus have to load your data from a single file and specify the 
+details about the data organization. For a detailed description of the input format please see the section 
+<a href="../fileformats.html">File formats</a>. Below you can find an overview over the steps of the data loading
+process with the GUI.
+
+<h3><span style="font-weight: bold;">The data loading menu</span></h3>
+The menu for data loading is always visible from the start in the main panel of the GUI. 
+You can choose your data file here with the <span style="font-weight: bold;">Browse</span> button. 
+
+<h3><span style="font-weight: bold;">Choosing your input file</span></h3>
+Your data file will be processed before loading, so that 
+you can choose the column labels that define newly transcribed, pre-existing and total RNA, as well as the label for the column
+containing the probeset ids. Please note that if you choose an unequal number of RNA for the three cases, you 
+will be limited in the subsequent analyzes. You can also define whether your data is in log or linear scale.<br>
+If your data file also contains additional attributes, you are asked if you want to load these with your data. 
+Attributes can be saved with the data for further uses, and several methods of the HALO software package require 
+attributes like gene names or present/absent calls. You can load these directly with your data or over the 
+<span style="font-weight: bold;">Add attributes/sequences</span> button afterwards. <br>
+<b>Please note:</b> You should never load present/absent calls together with other attributes! Since present/
+absent calls are attributes with only very few values, they are saved differently from other attributes in 
+order to speed up the loading process. If you load other attributes in the same way, further procedures
+might not work! You will be asked if your attributes are present calls whenever you load attributes.<br>
+
+<h3><span style="font-weight: bold;">Loading additional attributes</span></h3>
+The <span style="font-weight: bold;">Add attributes/sequences</span> button offers you the possibility 
+to load files containing one or more attributes (for information on file format see <a href="../fileformats.html">
+File formats</a>), one menu point for the loading of a multiple fasta file and also provides you with 
+the possibilty to load attributes from your original data file. The multiple fasta file should 
+contain sequences for every of your probesets (probesets with no matching sequence will be ignored otherwise)
+and a gene name in the header that is identical to the name of the corresponding attribute. You can thus 
+use a multiple fasta file only in combination with an attribute defining gene names for your probesets.
+You can choose the column that contains the gene name at the example of the first sequence from your file.
+
+<h3><span style="font-weight: bold;">Subsequent steps</span></h3>
+After you have loaded the data you are able to access two new menus: The <a href="menufilter.html">Filtering</a>
+and the <a href="menunormalization.html">Normalization</a> menu. You can extend the GUI to show these menus by 
+clicking on the corresponding menus in the menu bar: <b>Filter Data</b> and <b>Normalization</b> &rarr; <b>Normalization</b>.<br>
+If you have loaded gene names and sequences you can now also evaluate your data with the <a href="menuquality.html">
+Quality control</a> menu in the menu bar.
+
+<!-- footer start -->
+<br/><br/>
+<hr size="1"/>
+<div style="font-size:small"><a target="_blank" href="http://www.bio.ifi.lmu.de/software/HALO/">HALO</a> documentation</div>
+<!-- footer end -->
+
+</body>
+</html>

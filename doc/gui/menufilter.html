@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  
+  <title>Data filtering menu</title>
+  <link rel="StyleSheet" href="../styles.css" type="text/css">
+  
+  <script language="JavaScript" src="../frames.js"></script>
+</head>
+<body onload="ensureframes()">
+<h2>Filtering the Data with the GUI</h2>
+If you want to use a subset of your data instead of the complete content of the data file, 
+you can use the filtering menu in order to reduce the probesets according to a set of 
+filtering methods. 
+
+<h3><span style="font-weight: bold;">Extending the menu</span></h3>
+You can access the filtering menu after loading of the data through clicking the menu option 
+labeled <span style="font-weight: bold;">Filter Data</span> in the menu bar. 
+
+<h3><span style="font-weight: bold;">Filtering methods</span></h3>
+In the 1.3 version of HALO a set of four different filtering methods is provided. Below you can 
+find a short description of their functionality, as well as attributes that might be needed.
+
+<ul>
+	<li><span style="font-weight: bold;">Threshold</span><br>
+	The Threshold-method filters your data according to a numerical threshold. Probesets with 
+	at least one RNA value below this threshold will be discarded in this step.</li>
+	
+	<li><span style="font-weight: bold;">Present/Absent calls</span><br>
+	This method uses present/absent calls to filter the data. The list of calls has to be loaded 
+	as an attribute in a separate file or with the original data. It can also be loaded from the original 
+	data file if you did not choose to include these when loading. <br>
+	If you choose this method you can choose a <code>call</code> and a <code>threshold</code> for filtering. Your data will be 
+	filtered in such a way, that every probeset with at least <code>threshold</code> calls of the type 
+	<code>call</code> will be discarded.</li>
+	
+	<li><span style="font-weight: bold;">Probeset quality score - Threshold</span><br>
+	This method is based on the quality scores of each probeset. You can enter a numerical threshold, 
+	and every probeset with a quality score exceeding this number will be discarded.<br>
+	For the calculation of quality scores normalized data is needed; if you have not performed normalization 
+	up to this point it will be started automatically. <br>
+	You are also provided with the possibility to save the calculated quality scores or plot them in a 
+	histogram. 
+	
+	<li><span style="font-weight: bold;">Probeset quality score - Optimal probeset</span><br>
+	Like the previous method this filtering method is based on the quality scores. For each gene 
+	the probeset with the minimal quality score is kept, all others discarded. The method thus results 
+	in one probeset per gene.<br>
+	You can limit the calculations to one replicate; otherwise an average over all replicates is used.
+	Before using this method normalization has to be performed (see above) and gene names have to be 
+	loaded as attribute.<br>
+	You can again save the quality scores and create a histogram from them.</li>
+</ul>
+
+You can choose more than one of these filtering methods; all methods will be used subsequently in order to 
+filter your data. To start the process you have to click the <span style="font-weight: bold;">Start</span> button.
+If you are not satisfied with your data you can always repeat filtering with stricter thresholds or other parameters.
+Please note that these new filtering steps will then be used <b>additionally</b> to those already performed. If you 
+want to restart the complete process, you can reset the data with the <span style="font-weight: bold;">Clear</span>
+button. 
+
+<h3><span style="font-weight: bold;">Saving the data</span></h3>
+If you want to save the data after the filtering step you can do this by clicking the <span style="font-weight: bold;">
+Save</span> button. In the popup dialog you can then choose all data columns that you want to be included 
+in the output file and choose a saving destination as well as a name.
+
+<h3><span style="font-weight: bold;">Subsequent steps</span></h3>
+Filtering is an optional procedure that does not unlock any additional steps.
+
+
+<!-- footer start -->
+<br/><br/>
+<hr size="1"/>
+<div style="font-size:small"><a target="_blank" href="http://www.bio.ifi.lmu.de/software/HALO/">HALO</a> documentation</div>
+<!-- footer end -->
+
+</body>
+</html>

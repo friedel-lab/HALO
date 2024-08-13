@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  
+  <title>Sample Use Case 4: Working with additional tools</title>
+  <link rel="StyleSheet" href="../styles.css" type="text/css">
+  
+  
+  <script language="JavaScript" src="../frames.js"></script>
+</head>
+<body onload="ensureframes()">
+<h3>Sample
+Use Case 4: Working with additional tools<br>
+</h3>
+Besides calculating half-lives we can also evaluate the quality of the original expression data based on 
+numbers of uracils in the corresponding sequences or calculate the median half-life. With the 
+source code below you can reproduce these processes.<br><br>
+<span style="font-weight: bold;">Important note:</span>
+
+All variable parameters (methods, thresholds, etc) that are used in this example are chosen 
+<span style="text-decoration: underline;">arbitrarily</span> and only for description purposes. 
+These parameters have to be chosen carefully depending on the data and goals for practical uses.<br>
+<br>
+<span style="font-weight: bold;">Table of contents:</span><br>
+<ul>
+   <li><a href="#eval">Quality control of data</a></li>
+   <li><a href="#bias">Bias correction with R</a></li>
+   <li><a href="#outp">Output</a></li>
+</ul>
+<br>
+
+<br>
+<span style="font-weight: bold;"><a name="eval"></a>
+<span style="text-decoration: underline;">Quality control of data</span></span><br>
+<br>
+Based on sequences corresponding to our probesets we can evaluate the quality of our data 
+measurements. For this we first have to define a small set of parameters, e.g. the ratio 
+method that the number of uracils should be compared to. From these the probeset quality 
+score is calculated for each probeset and can be printed to a file as well as plotted as 
+a histogram.
+<br>
+<br>
+<table style="text-align: left; width: 100%;" border="0" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="width: 10px;"></td>
+      <td><code>
+//Define parameters<br>
+		int column&nbsp;&nbsp;&nbsp;&nbsp;= 1; //The column of the fasta header that contains gene names<br>
+		String method = "log(e'/n')"; //The method used for comparison against uracil numbers<br>
+		String output = "Example_mouse_quality_uracil.txt"; //Path for the output file (optional)<br>
+		boolean histo = true; //true if histogram should be plotted<br>
+		HashMap<String, Double> biasCorrection = null; //Bias correction factors<br>
+		<br>
+		//Start quality control<br>
+		data.evaluate("data/sequences_mouse.txt", column, method, output, biasCorrection, histo);<br>
+		
+</code></td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+
+<span style="font-weight: bold;"><a name="bias"></a>
+<span style="text-decoration: underline;">Bias correction with R</span></span><br>
+<br>
+If you have R installed you can perform a bias correction on your data. This is based on the
+output file from the previous quality control step, see <a href="#eval">above</a>. You can 
+calculate the correlation coefficient as well as the bias correction for each value, so that 
+you can subsequently repeat all previous analyses with corrected values.</br>
+At first you have to set the path to your R bin directory:</br>
+<code>public static final String PATHTOR = "";</code>;
+<br>
+<br>
+<table style="text-align: left; width: 100%;" border="0" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="width: 10px;"></td>
+      <td><code>
+      //calculate the correlation coefficient</br>
+		RCorrelationCoefficient cor = new RCorrelationCoefficient(PATHTOR, evalOut);</br>
+		cor.setMethod(RCorrelationCoefficient.PEARSON);</br>
+		//start correlation coefficient calculation</br>
+		double coefficient          = cor.calculateCorrelationCoefficient();</br>
+		System.out.println("The correlation coefficient: "+coefficient);</br>
+		</br>
+		//fill mapping and corresponding arrays</br>
+		String[] spots = data.getSpot();</br>
+		double[] datas = data.getDat();</br>
+</br>
+</br>
+		//Start the loess regression with R</br>
+		RLoessRegression loess = new RLoessRegression(PATHTOR, evalOut, spots, datas);</br>
+		HashMap<String, Double> lo = loess.calculateLoessRegression();</br>
+		data.setCorrNewTot(lo);</br>
+		data = Filter.filterCorrectionBias(data, lo);
+</code></td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+
+<span style="font-weight: bold;"><a name="outp"></a><span style="text-decoration: underline;">Output</span></span><br>
+<br>
+The output produced by HALO should look like this:
+<br>
+<br>
+<table style="text-align: left; width: 100%;" border="0" cellpadding="2"
+	cellspacing="2">
+	<tbody>
+		<tr>
+			<td style="width: 10px;"></td>
+			<td><code> Loading data...<br>
+			Done loading data.<br>
+			You have 31451 probesets.<br>
+			------------------------------<br>
+			Loading attributes...<br>
+			Done loading attributes.<br>
+			------------------------------<br>
+			Filtering data...<br>
+			Done filtering data.<br>
+			You have 11031 probesets.<br>
+			------------------------------<br>
+			Filtering data...<br>
+			Done filtering data.<br>
+			You have 10984 probesets.<br>
+			------------------------------<br>
+			Filtering data...<br>
+			Done filtering data.<br>
+			You have 10937 probesets.<br>
+			------------------------------<br>
+			Filtering data...<br>
+			Done filtering data.<br>
+			You have 10731 probesets.<br>
+			------------------------------<br>
+			------------------------------<br>
+			Starting quality control...<br>
+			Graph generated<br>
+			Average uracil number: 1372.0303373025854; Average log(e'/n'):
+			-0.14055195374872945<br>
+			You have 8814 probesets.<br>
+			<br>
+			1918 probesets had to be discarded, because no sequence data was
+			available for them.Done with quality control<br>
+			------------------------------<br>
+
+			------------------------------<br>
+			Calculating correlation coefficient...<br>
+			0<br>
+			Done calculating correlation coefficient<br>
+			------------------------------<br>
+			The correlation coefficient: 0.3516099<br>
+			------------------------------<br>
+			Calculate loess regression...<br>
+			0<br>
+			Done calculating loess regression<br>
+			------------------------------<br>
+			Filtering data...<br>
+			Done filtering data.<br>
+			You have 8813 probesets.<br>
+			------------------------------ </code></td>
+		</tr>
+	</tbody>
+</table>
+<br>
+The following files should be produced:
+<br>
+<ul>
+	<li><code>Example_mouse_quality_uracil.txt</code></li>
+</ul>
+The following plots should be produced:
+<br>
+<ul>
+	<li>Evaluation of data quality</li>
+</ul>
+</br>
+<br>
+
+
+<!-- footer start -->
+<br/><br/>
+<hr size="1"/>
+<div style="font-size:small"><a target="_blank" href="http://www.bio.ifi.lmu.de/software/HALO">HALO</a> documentation</div>
+
+<!-- footer end -->
+
+</body>
+</html>

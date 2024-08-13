@@ -1,0 +1,238 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  
+  <title>Example case - Using the HALO GUI</title>
+  <link rel="StyleSheet" href="../styles.css" type="text/css">
+  
+  
+  <script language="JavaScript" src="../frames.js"></script>
+</head>
+<body onload="ensureframes()">
+<h3>Example case - Using the HALO GUI<br>
+</h3>
+<br>
+This example case demonstrates the usage of the HALO GUI on example data provided in <code>HALO/data</code>.
+Analogous examples are given for the <a href="../cmdline/cmdUseCase.html">command line</a> and the <a href="../javaapi/usecases.html">
+Java API</a>. The data used in the examples is part of the HALO package and can be found in the <code>data</code> folder. <br>
+<br><br>
+
+<span style="font-weight: bold;">Table of contents:</span><br>
+<ul>
+  <li><a href="#load">Loading the data</a></li>
+  <li><a href="#filter">Filtering the data</a></li>
+  <li><a href="#normal">Normalizing the data</a></li>
+  <li><a href="#median">Calculating the median half-life</a></li>
+  <li><a href="#pqs">Filtering with probeset quality scores</a></li>
+  <li><a href="#halflife">Calculating half-lives</a></li>
+  <li><a href="#eval">Quality control</a></li>
+  <li><a href="#bias">Bias correction</a></li>
+</ul>
+<br>
+
+<br>
+<span style="font-weight: bold;"><a name="load"></a>
+<span style="text-decoration: underline;">Loading the data</span></span><br>
+<br>
+Please start the HALO GUI as described under <a href="intro.html">Graphical user interface</a> and 
+click <b>OK</b> in the greeting pop-up. You will now see the HALO GUI interface.
+For this example we want to use the data provided in the corresponding <code>HALO/data</code> folder.
+If you are using the webstart version, please download the example files from the <a href="http://www.bio.ifi.lmu.de/software/HALO">
+HALO website</a>.</br>
+In order to load this into the application, you can use the Load-Data-panel always shown at the top. </br>
+<ul>
+	<li>Click <b>Browse</b> and choose the file <code>HALO/data/Example_mouse.txt</code>
+	from where you extracted HALO. (Please note that all your data files have to be '.txt'-files)</li>
+	<li>In the following three popups you have to choose first labels of newly transcribed RNA (<code>E1, E2</code> and 
+	<code>E3</code>), then labels of pre-existing RNA (<code>U1, U2</code> and <code>U3</code>) and last 
+	labels for total RNA (<code>T1, T2</code> and <code>T3</code>). You will be taken to the next 
+	popup when you click on <b>Enter</b> at the bottom of the popup.</li>
+	<li>In the next popup you will be asked to define the name of the column that contains 
+	the probeset ids. Please check the box named <code>Column1</code>.</li>
+	<li>When asked what scale your data is in, you can leave the default <b>linear</b> scale.</li>
+	<li>You will now be asked if you want to load additional attributes. Since we want to 
+	load present/absent calls from the original file, please click <b>Yes</b>.</li>
+	<li>Now you can check the labels that begin with <code>	Call_</code>.</li>
+	<li>When asked if these labels are present calls, confirm with <b>Yes</b>.</li>
+	<li>Click <b>Load</b> to complete the data loading.</li>
+	<li>If you have chosen the correct labels you will be now informed, that HALO has loaded
+	31,451 probesets from the data file.</li>
+	<li>We now want to load the gene name attribute from the original data file via the <b>Add attributes/sequences</b> button.  Choose <b>Attributes from the original data file</b> and check <code>Gene Symbol</code> in the following popup. When asked if these labels are present calls, click <b>No</b> and the attribute will be loaded.</li>
+</ul>
+
+<br>
+<span style="font-weight: bold;"><a name="filter"></a>
+<span style="text-decoration: underline;">Filtering the data</span></span><br>
+We now want to filter the data according to a numerical threshold and present/absent calls.
+<ul>
+	<li>Click the menu called <b>Filter data</b> in the menu bar to open the sub menu.</li>
+	<li>Choose the option <b>Threshold</b>. A popup will ask you for your chosen threshold. You can 
+	now enter <code>50</code> and click <b>OK</b>.</li>
+        <li>Now you can start the filtering by clicking on <b>Start</b>. HALO will inform you that you have now 
+	11,031 probesets left.</li>
+	<li>We also want to filter according to present/absent calls. For this you can click the <b>
+	Present/Absent calls</b> option. You will be asked which labels describe these calls, so choose 
+	every label beginning with <code>Call_</code>.</br>
+	After this you will be asked for a call and a threshold. As a call we want to use <code>A</code> for absent, threshold 
+	can be left at the default value 1. This will remove all probe sets with at least 1 absent call.
+	</li>
+	<li>Now you can start the filtering by clicking on <b>Start</b>. HALO will inform you that you have now 
+	10,984 probesets left.</li>
+	<li>We want to filter again according to present/absent calls. For this you can repeat the procedure 
+	two steps above and enter <code>M</code> as a call. </li>
+	<li>Click again <b>Start</b>. There should be now 10,937 probesets.</li>
+	<li>We want to filter a third time for those probesets that have no annotated genes. For this we 
+	repeat the present/absent filtering, but this time we choose <b>Gene Symbol</b> instead of 
+	the present/absent calls as relevant attribute, and enter <code>---</code> as a call, 
+	therefore filtering all those that have no gene names at all.</li>
+	<li>Click <b>Start</b>. There should be 10,731 probesets left.</li>
+</ul>
+<br>
+
+
+<span style="font-weight: bold;"><a name="normal"></a>
+<span style="text-decoration: underline;">Normalizing the data</span></span><br>
+Before calculating half-lives we have to normalize the data.
+<ul>
+	<li>Go to the <b>Normalization</b> menu in the menu bar, and choose <b>Normalization</b> in the sub menu.</li>
+	<li>Click <b>Normalization method</b> to choose a method. In the pop-up you should choose 
+	<code>Linear Regression</code> (since you don't know the median half-life yet) and click <b>OK</b>.</li>
+	<li>You will now be provided with the possibility to choose a method for ratio calculation. 
+	You can leave this as default and click <b>OK</b>.</li>
+	<li>Start normalization by clicking on <b>Start</b>.</li>
+	<li>These should be your reported correction factors:</br>
+	<code>
+c_l:0.11605928227524738<br>
+c_u: 0.8326610520522192<br>
+c_lu: 0.13938358470016307<br></code></li>
+	<li>You can now also plot the linear regression line compared to the unnormalized data by clicking 
+	on <b>Plot</b>. This procedure may take a short moment.</li>
+	<li>You can choose to save the figure or the plotting file.</li>
+
+</ul>
+<br>
+
+<span style="font-weight: bold;"><a name="median"></a>
+<span style="text-decoration: underline;">Calculating the median half-life</span></span><br>
+Based on the normalized data we can now calculate the median half-life.
+<ul>
+	<li>Go to the menu bar and choose <code>Half-Life</code>. In the opening sub menu choose 
+	<code>Calculate median half-life</code>.</li>	
+	<li>You will be asked for a labeling time, where you can enter <code>55</code>.</li>
+	<li>Your median half-life will now be calculated. The result should be <code>320.3161021500094</code>.</li>
+</ul>
+<br>
+
+<span style="font-weight: bold;"><a name="pqs"></a>
+<span style="text-decoration: underline;">Filtering with probeset quality scores</span></span><br>
+Before starting the half-life calculation we want to filter again according to the probeset quality scores 
+(PQS). If you want to compare these scores before and after filtering, you can access the calculation of 
+these via the menu bar, <b>Quality control</b> and then <b>Calculate the probeset quality control scores</b>.
+If you compare the histogram produced here with the histogram generated after filtering, you should see 
+a high decrease in numbers of probesets with scores higher than 1.
+<ul>
+	<li>Go back to the filtering sub panel.</li>
+	<li>We want to filter the data using the probeset quality scores. This method requires 
+	gene names as an attribute, which we have already loaded <a href="#load">here</a>.</li>
+	<li>Choose <code>Probeset quality score - optimal probeset</code> in the filtering panel. 
+	This method can only be performed after normalization! If normalization by linear regression was not performed yet, it will be done when you click the optimal probe set option.</li>
+	<li>You will be asked to provide the label of the gene names. Per default this is <code>gene_name</code>,
+	but we want to change it and choose <code>Gene Symbol</code> in the following popup.</li>
+	<li>You can enter a replicate now, but we will leave this field empty. Also, we don't want 
+	to save or plot probeset quality scores, so click <b>No</b> when asked. Afterwards you can click <b>
+	Start</b> and should be informed that there are now 7,208 probesets.</li>
+	<li>We can save the results by clicking on <b>Save</b>. Please choose a location and save 
+	the filtered probesets under the name <code>Examples_mouse_filtered_pqs.txt</code>.</li>
+</ul>
+<br>
+
+<span style="font-weight: bold;"><a name="halflife"></a>
+<span style="text-decoration: underline;">Calculating half-lives</span></span><br>
+We are now ready to calculate our half-lives. We will demonstrate how to use normalization with linear regression
+and based on median as a basis for half-live calculation.
+<ul>
+<li>First, we want to calculate the half-lives with the method based on Newly transcribed/Total RNA and data normalized with the linear regression method. You get to the Half-life panel via Ctrl+H or over the <b>Half-Life</b> &rarr; 
+    <b>Half-Life calculation</b> menu.</li>
+   <li>For this click on the <b>Add calculation</b> button in the Half-life panel. Enter <code>55</code> 
+    as labeling time and choose <code>Newly transcribed/Total based</code> as method. Confirm your choice and click 
+    <b>Start</b>  and HALO will 
+    calculate your half-lives.</li>
+ <li>You can now save them by clicking on the <b>Save</b> button.</li>
+<li>Now we want to calculate the half-lives for data normalized with the median half-life. For this we will have to repeat normalization: Click on <b>
+	Normalization</b>, confirm that you want to repeat it and choose <code>Median half-life based</code>. Enter now 
+	the median that we calculated earlier: <code>320.3161021500094</code>.
+	You will be asked to enter a half-life calculation method, so choose <code>Newly transcribed/Total based</code>, 
+    enter <code>55</code> as labeling time, confirm your choice and start normalization. 
+    The resulting correction factor should be <code>c_l: 0.11748556305145565</code>.</li>
+    <li>When you now go to the Half-life panel, you can only click <b>Start</b>. This is because 
+    you already chose half-life methods when using normalization. Click <b>Start</b> and HALO will 
+    calculate your half-lives.</li>
+ <li>You can now save your half-lives singularly with attributes or all together, and also plot them!</li>
+</ul>
+<br>
+
+<span style="font-weight: bold;"><a name="eval"></a>
+<span style="text-decoration: underline;">Quality control</span></span><br>
+We can use RNA sequences to evaluate the quality of our input data. This is based on a comparison of 
+number of Uracils per sequence and the logarithm of a certain ratio, e.g. newly transcribed/total. <br>
+<ul>
+	<li>You first have to load a multiple fasta file containing the sequences corresponding to your 
+	data. For this go to the data panel and click on <b>Add attributes/sequences</b>. Then choose 
+	<code>Multiple Fasta file</code> and locate the file <code>sequences_mouse.txt</code> 
+	in your file system. HALO will ask you, which of a series of labels is the gene name. 
+	Choose the correct label (in our case the third label) and confirm.</li>
+	<li>To map sequences to probe sets, the gene name attribute needs to be specified. Per default this is 
+	<code>gene_name</code>, but you can change this via the <b>Settings</b>-menu or directly 
+	after loading your sequences. Since we already set the Gene name attribute to <code>Gene Symbol</code> when filtering probe sets according to the probe set quality score, you will not be asked for the label now. If you skipped the probe set quality step, you will be asked for the label, so choose <code>Gene Symbol</code> from the following list.</li>
+	<li>When you have loaded your sequences, go to the menu bar and choose <b>Quality control</b>.
+	Under <b>Calculation of Uracil number</b> you can perform the quality control.</li>
+	<li>Choose a ratio for your comparison. We want to use newly transcribed to total, so please click on 
+	<code>log(e'/n')</code> and confirm your choice.</li>
+	<li>When asked if you want to save the plotting data choose <b>Yes</b> and save the file 
+	under the name <code>Example_mouse_quality-scores.txt</code>.</li>
+	<li>The evaluation will start automatically and you will be prompted with a plot and the results:</br>
+	<code>Average uracil number: 1279.1442745032682<br>
+Average log(e'/n'):-0.11168352570969527</code></li>
+</ul>
+<br>
+
+<!--<span style="font-weight: bold;"><a name="bias"></a>
+<span style="text-decoration: underline;">Bias correction</span></span><br>
+If you have R installed you can also calculate a correlation coefficient and bias correction.
+<ul>
+	<li>Choose <b>Correction for bias in capture rates</b> in the <b>Quality control</b> menu.</li>
+	<li>At first you have to locate the bin folder of your R installation. If you do not have R 
+	installed you can't use this feature.</li>
+	<li>When asked if you already have calculated the uracil numbers, choose <b>Yes</b> and 
+	choose the file called <code>Example_mouse_quality-scores.txt</code> in the file browser, 
+	that we created in the previous step.</li>
+	<li>For the calculation of the correlation coefficient you need to define a method. We will 
+	leave this as default, so please click <b>OK</b> to confirm this choice. </li>
+	<li>R will now be used for the calculation, and HALO will display the correlation 
+	coefficient for you: <code>0.3944474</code>.</li>
+	<li>When you have confirmed this HALO will proceed to calculate the bias correction. This 
+	will happen completely automatically after your confirmation and may take a short moment.</li>
+	<li>After the calculation is over you can redo several plots and analyze them with the corrected 
+	values. You will be asked in the following order:
+	<ul>
+		<li>Quality control plot</li>
+		<li>Normalization and half-lives</li>
+		<li>Corresponding plots</li>
+	</ul>
+	You can take a look at all of these to see how the results changed through bias-correction. 
+	In further analyses, the corrected values will be used for all calculations.
+	</li>
+	
+</ul>
+<br>-->
+
+<!-- footer start -->
+<br/><br/>
+<hr size="1"/>
+<div style="font-size:small"><a target="_blank" href="http://www.bio.ifi.lmu.de/software/HALO">HALO</a> documentation</div>
+
+<!-- footer end -->
+
+</body>
+</html>

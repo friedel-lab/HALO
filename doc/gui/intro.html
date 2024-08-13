@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  
+  <title>Graphical user interface</title>
+  <link rel="StyleSheet" href="../styles.css" type="text/css">
+
+  <script language="JavaScript" src="../frames.js"></script>
+</head>
+
+<body onload="ensureframes()">
+
+<h2>
+Graphical user interface</h2>
+
+The HALO package incorporates a graphical user interface (GUI) for an 
+easy access to most of the methods.<br>
+
+<h3>Starting the GUI<br>
+
+</h3>
+
+The GUI java program is launched with a start-up script located in the
+main directory of the HALO package. Choose the right script,
+depending on your system:<br>
+
+<ul>
+  <li><code>gui.bat</code> for Windows users<br>
+  </li>
+  <li><code>gui.sh</code> for Linux and Mac OS users<br>
+    <br>
+  </li>
+</ul>
+
+Alternatively you can start the GUI via the webstart version available at the <a href="http://www.bio.ifi.lmu.de/software/HALO">
+HALO homepage</a>.
+
+<h3>Basic features of the GUI<br>
+</h3>
+
+<ul>
+  <li>The GUI consists of four <span style="font-weight: bold;">panels</span>. 
+   The panel <span style="font-weight: bold;">Load Data</span> is available from the start.
+The panels <span style="font-weight: bold;">Filter Data</span>, <span style="font-weight: bold;">Normalization</span> 
+   and <span style="font-weight: bold;">Half-life calculation</span> can be accessed over the corresponding menus in the menu bar. If a certain step is necessary in order to perform one of these 
+   methods (e.g. you have to load the data prior to filtering) you can not show this menu before completing
+   the previous step. </li>
+   
+   <li>Additional features and methods can be accessed over the <span style="font-weight: bold;">menu bar</span>.
+
+  <li>You can <span style="font-weight: bold;">save and restore</span> your work <span style="font-weight: bold;">sessions</span> (i.e. all loaded objects and settings). See also: <a href="menusession.html">Session menu</a>.</li>
+
+	<li>Some methods provide you with the possibility of plotting the results with JFreeChart (see 
+	<a href="../main/external.html">External libraries</a>). You can use the functionality of JFreeChart, 
+	e.g. zooming or saving the plot, if you right click on the graph.</li>
+
+  <li>Most components in the GUI have context related <span style="font-weight: bold;">tips</span>. Whenever you see the little question mark you can click it to get corresponding help.<br>
+
+    <br>
+
+  </li>
+
+</ul>
+<b>Please note</b> that you should use American number format (e.g. 0.05 instead of 
+0,05) to assure the best performance of the HALO GUI!
+
+<h3>First steps<br>
+</h3>
+
+Check out the <a href="firststeps.html">First steps guide</a> for a 5-minute tutorial to the HALO GUI 
+and the <a href="guiusecase.html">Example case</a> for demonstration of the GUI for example data.<br>
+
+<br>
+<h3>Memory<br>
+</h3>
+
+By default 1GB of memory will be available for the Java VM when using
+a command line tool. If you want to change this amount, specificy <code>-Xmx000m</code> as the first argument where <code>000</code> is the amount of megabytes which will be available. (Note: the <code>-Xmx</code> parameter is directly passed to the Java virtual machine, syntax errors will cause error messages of the Java interpreter). <br>
+
+<br>
+
+Example:<br>
+
+<span style="font-family: monospace;">gui</span><code>.sh -Xmx2048m</code><br>
+
+<br>
+<h3>Functionality<br>
+</h3>
+
+<span style="font-weight: bold;">Main panels</span><br>
+<ul>
+
+  <li><a href="menuload.html">Load Data</a></li>
+
+  <li><a href="menufilter.html">Filter Data</a></li>
+
+  <li><a href="menunormalizaion.html">Normalization</a></li>
+
+  <li><a href="menuhalflife.html">Half-life</a></li>
+
+</ul>
+
+<span style="font-weight: bold;">Menu bar</span>
+<br>
+
+<ul>
+
+  <li><a href="menusession.html">Session menu</a></li>
+  
+  <li><a href="menusettings.html">Settings menu</a></li>
+  
+  <li><a href="menuquality.html">Quality control menu</a></li>
+  
+  <li><a href="menufilter.html">Filter Data</a></li>
+  
+  <li><a href="menumedian.html">Normalization menu</a></li>
+  
+  <li><a href="menunorm.html">Half-life menu</a></li>
+  
+  <li><a href="menusave.html">Save menu</a></li>
+  
+  <li><a href="menuhelp.html">Help menu</a></li>
+
+</ul>
+
+<br>
+
+<br>
+
+<hr size="1">
+<div style="font-size: small;"><a target="_blank" href="http://www.bio.ifi.lmu.de/software/HALO">HALO</a> documentation</div>
+
+<!-- footer end -->
+</body>
+</html>

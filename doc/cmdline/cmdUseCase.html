@@ -1,0 +1,433 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+
+<title>Command Line Use Case</title>
+<link rel="StyleSheet" href="../styles.css" type="text/css">
+
+
+<script language="JavaScript" src="../frames.js"></script>
+</head>
+<body onload="ensureframes()">
+<h3>Command Line Use Case<br>
+</h3>
+<br>
+<br>
+<span style="font-weight: bold;">Important note:</span>
+This use case demonstrates the usage of the command line tool with a
+simple example. Most of the features of the tool are shown in the course
+of this use case. You can also find demonstrations with the same steps
+and example values for the
+<a href="../gui/
+guiusecase.html">GUI</a>
+and the
+<a href="../javaapi/usecases.html">API</a>
+.
+</br>
+All variable parameters (methods, thresholds, etc) that are used in this
+example are chosen
+<span style="text-decoration: underline;">arbitrary</span>
+and only for description purposes. These parameters have to be chosen
+carefully depending on the data and goals for practical uses.
+<br>
+<br>
+<span style="font-weight: bold;">Table of contents:</span>
+<br>
+<ul>
+	<li><a href="#filter">Loading and filtering the data</a></li>
+	<li><a href="#halfl">Normalizing the data and calculating the
+	half-lives</a></li>
+	<li><a href="#ura">Quality control</a></li>
+	<li><a href="#outp">Output</a></li>
+
+</ul>
+<br>
+
+<br>
+<span style="font-weight: bold;"><a name="filter"></a> <span
+	style="text-decoration: underline;">Loading and filtering the
+data</span></span>
+<br>
+<br>
+This step will show you how to load and filter data from an example file
+provided with the HALO package and how to save it again. You will need
+to define the labels of the input columns (
+<code>-ct</code>
+for total,
+<code>-cp</code>
+for pre-existing,
+<code>-cn</code>
+for newly transcribed RNA,
+<code>-ca</code>
+for attributes), the input file and the filtering methods. We will
+filter the data with a numerical threshold of 50 and according to
+present/absent calls with two different calls: 'A' and 'M'. Additionally 
+we use the present/absent call method with the gene names and call '---' 
+to filter out the probesets without annotated genes.
+We set <code>-caPC</code> to <code>TRUE</code> since we try to load 
+present call attributes, in order to speed up the process.
+<br>
+<br>
+<table style="text-align: left; width: 100%;" border="0" cellpadding="2"
+	cellspacing="2">
+	<tbody>
+		<tr>
+			<td style="width: 10px;"></td>
+			<td>You will use the following parameters (for detailed
+			explanation of the parameters see <a href="cmdData.html">here</a>): <code></br>
+			</br>
+			-i data/Example_mouse.txt</br>
+			-ct T1,T2,T3</br>
+			-cp U1,U2,U3</br>
+			-cn E1,E2,E3</br>
+			-ca
+			Call_T1,Call_T2,Call_T3,Call_U1,Call_U2,Call_U3,Call_E1,Call_E2,Call_E3</br>
+			-pc TRUE<br>
+			-f
+			threshold=50<br>
+			-f present=Call_T1,Call_T2,Call_T3,Call_U1,Call_U2,Call_U3,Call_E1,Call_E2,Call_E3:A:1<br>
+			-f present=Call_T1,Call_T2,Call_T3,Call_U1,Call_U2,Call_U3,Call_E1,Call_E2,Call_E3:M:1<br>
+			-f present=Gene~Symbol:---:1</br>
+			-of Example_mouse_filtered.txt</br>
+			</code></br>
+			Your complete call will look like this:</br>
+			</br>
+			<code> -i data/Example_mouse.txt 
+-ct T1,T2,T3 
+-cp U1,U2,U3 
+-cn E1,E2,E3 
+-ca Call_T1,Call_T2,Call_T3,Call_U1,Call_U2,Call_U3,Call_E1,Call_E2,Call_E3 
+-pc TRUE 
+-f threshold=50 
+-f present=Call_T1,Call_T2,Call_T3,Call_U1,Call_U2,Call_U3,Call_E1,Call_E2,Call_E3:A:1
+-f present=Call_T1,Call_T2,Call_T3,Call_U1,Call_U2,Call_U3,Call_E1,Call_E2,Call_E3:M:1
+-f present=Gene~Symbol:---:1
+-of Example_mouse_filtered.txt</code></td>
+		</tr>
+	</tbody>
+</table>
+<br>
+<br>
+
+<br>
+<span style="font-weight: bold;"><a name="halfl"></a> <span
+	style="text-decoration: underline;">Normalizing the data and
+calculating the half-lives</span></span>
+<br>
+<br>
+In the next step you can normalize your data and calculate the
+half-lives. You will need all previous parameters (except for output) in
+order to load and filter the data before normalization. Additionally you
+have to define the normalization method (in this case standard for
+linear regression), the half-life calculation methods and a labeling
+time, as well as several flags that are necessary for saving.
+</br>
+For this example two half-life methods are used, based on newly transcribed/total
+RNA and on pre-existing/total RNA, respectively, with a labeling time of
+55.
+<br>
+<br>
+<table style="text-align: left; width: 100%;" border="0" cellpadding="2"
+	cellspacing="2">
+	<tbody>
+		<tr>
+			<td style="width: 10px;"></td>
+			<td>Parameters:</br>
+			</br>
+			<code> -i data/Example_mouse.txt</br>
+			-ct T1,T2,T3</br>
+			-cp U1,U2,U3</br>
+			-cn E1,E2,E3</br>
+			-ca
+			Call_T1,Call_T2,Call_T3,Call_U1,Call_U2,Call_U3,Call_E1,Call_E2,Call_E3</br>
+			-pc TRUE <br>
+			-f threshold=50<br>
+			-f present=Call_T1,Call_T2,Call_T3,Call_U1,Call_U2,Call_U3,Call_E1,Call_E2,Call_E3:A:1<br>
+			-f present=Call_T1,Call_T2,Call_T3,Call_U1,Call_U2,Call_U3,Call_E1,Call_E2,Call_E3:M:1<br>
+			-f present=Gene~Symbol:---:1</br>
+			-l standard</br>
+			-h1 new</br>
+			-h2 pre</br>
+			-t 55</br>
+			-o Example_mouse_halflives.txt </br>
+			-w halflife </br>
+			-m new,pre<br>
+			-plot TRUE</br><br>
+			</code> Your complete call will look like this:</br>
+			</br>
+			<code> -i data/Example_mouse.txt 
+-ct T1,T2,T3 
+-cp U1,U2,U3 
+-cn E1,E2,E3 
+-ca Call_T1,Call_T2,Call_T3,Call_U1,Call_U2,Call_U3,Call_E1,Call_E2,Call_E3 
+-pc TRUE
+-f threshold=50
+-f present=Call_T1,Call_T2,Call_T3,Call_U1,Call_U2,Call_U3,Call_E1,Call_E2,Call_E3:A:1
+-f present=Call_T1,Call_T2,Call_T3,Call_U1,Call_U2,Call_U3,Call_E1,Call_E2,Call_E3:M:1
+-f present=Gene~Symbol:---:1
+-of Example_mouse_filtered.txt 
+-l standard 
+-h1 new 
+-h2 pre 
+-t 55 
+-o Example_mouse_halflives.txt 
+-w halflife 
+-m new,pre 
+-plot TRUE</code></td>
+		</tr>
+	</tbody>
+</table>
+<br>
+<br>
+
+<br>
+<span style="font-weight: bold;"><a name="ura"></a> <span
+	style="text-decoration: underline;">Quality control</span></span>
+<br>
+<br>
+The command line tool allows you to test for the quality of your data if
+you have sequence information. The example below will demonstrate you
+how to load a sequence file (with the flag
+<code>-uf</code>
+) and load separate attributes from the original file (with the
+flag
+<code>-ca2</code>
+).  Please note that we have to replace any whitespace characters from 
+our values with '~' for the program to ran correctly, so we have to call
+<code>-ca2</code> with the label <code>Gene~Symbol</code> instead of 
+<code>Gene Symbol</code>. You also have to define the column of the fasta header that contains
+the gene name, and a ratio ( e.g. log(e'/n')) for the comparison of
+uracil numbers with this ratio. We will also print the probeset quality
+score to a file called
+<code>Example_mouse_quality.txt</code>
+and plot a histogram of the previous quality control (with the flag
+<code>-pp</code>
+).
+</br>
+Additionally we will use the probeset quality score to find the best
+probeset for each gene.
+<br>
+<br>
+<table style="text-align: left; width: 100%;" border="0" cellpadding="2"
+	cellspacing="2">
+	<tbody>
+		<tr>
+			<td style="width: 10px;"></td>
+			<td>You will use the following parameters (for detailed
+			explanation of the parameters see <a href="cmdData.html">here</a>): <code></br>
+			</br>
+			-i data/Example_mouse.txt</br>
+			-ct T1,T2,T3</br>
+			-cp U1,U2,U3</br>
+			-cn E1,E2,E3</br>
+			-ca
+			Call_T1,Call_T2,Call_T3,Call_U1,Call_U2,Call_U3,Call_E1,Call_E2,Call_E3</br>
+			-pc TRUE<br>
+			-ca2 Gene~Symbol</br>
+			-genelabel Gene~Symbol<br>
+			-f threshold=50<br>
+			-f present=Call_T1,Call_T2,Call_T3,Call_U1,Call_U2,Call_U3,Call_E1,Call_E2,Call_E3:A:1<br>
+			-f present=Call_T1,Call_T2,Call_T3,Call_U1,Call_U2,Call_U3,Call_E1,Call_E2,Call_E3:M:1<br>
+			-f present=Gene~Symbol:---:1</br>
+			-f pqs=min<br>
+			-uf data/sequences_mouse.txt</br>
+			-uc 3</br>
+			-ur "log(e'/n')"</br>
+			-pqs Example_mouse_quality.txt</br>
+			-pp TRUE</br>
+			</br>
+			</code> Your complete call will look like this: </br>
+			</br>
+			<code> -i data/Example_mouse.txt 
+			-ct T1,T2,T3 
+			-cp U1,U2,U3 
+			-cn E1,E2,E3 
+			-ca Call_T1,Call_T2,Call_T3,Call_U1,Call_U2,Call_U3,Call_E1,Call_E2,Call_E3
+			-pc TRUE
+			-ca2 Gene~Symbol
+			-genelabel Gene~Symbol
+			-f threshold=50
+			-f present=Call_T1,Call_T2,Call_T3,Call_U1,Call_U2,Call_U3,Call_E1,Call_E2,Call_E3:A:1
+			-f present=Call_T1,Call_T2,Call_T3,Call_U1,Call_U2,Call_U3,Call_E1,Call_E2,Call_E3:M:1
+			-f present=Gene~Symbol:---:1
+			-f pqs=min
+			-uf data/sequences_mouse.txt 
+			-uc 3 
+			-ur "log(e'/n')" 
+			-pqs
+			Example_mouse_quality.txt 
+			-pp TRUE </code></td>
+		</tr>
+	</tbody>
+</table>
+<br>
+<br>
+
+
+<span style="font-weight: bold;"><a name="outp"></a><span
+	style="text-decoration: underline;">Output</span></span>
+<br>
+<br>
+The output produced by HALO should look like this:<br><br>
+<b>Data loading and filtering</b>
+<br>
+</br>
+<code>
+Reading data...<br>
+Loading data...<br>
+Done loading data.<br>
+You have 31451 probesets.<br>
+------------------------------<br>
+Done reading data<br>
+Filtering data...<br>
+Filtering data...<br>
+Done filtering data.<br>
+You have 11031 probesets.<br>
+------------------------------<br>
+Filtering data...<br>
+Done filtering data.<br>
+You have 10984 probesets.<br>
+------------------------------<br>
+Filtering data...<br>
+Done filtering data.<br>
+You have 10937 probesets.<br>
+------------------------------<br>
+Filtering data...<br>
+Done filtering data.<br>
+You have 10731 probesets.<br>
+------------------------------<br>
+Done filtering data<br>
+Writing filtered data into file...<br>
+Done writing filtered data<br>
+Writing filtered data into file...<br>
+Done writing filtered data
+</code>
+<br>
+<br>
+
+<b>Normalizing and half-life calculation</b>
+<br>
+</br>
+<code>
+Reading data...<br>
+Loading data...<br>
+Done loading data.<br>
+You have 31451 probesets.<br>
+------------------------------<br>
+Done reading data<br>
+Filtering data...<br>
+Filtering data...<br>
+Done filtering data.<br>
+You have 11031 probesets.<br>
+------------------------------<br>
+Filtering data...<br>
+Done filtering data.<br>
+You have 10984 probesets.<br>
+------------------------------<br>
+Filtering data...<br>
+Done filtering data.<br>
+You have 10937 probesets.<br>
+------------------------------<br>
+Filtering data...<br>
+Done filtering data.<br>
+You have 10731 probesets.<br>
+------------------------------<br>
+Done filtering data<br>
+Writing filtered data into file...<br>
+Done writing filtered data<br>
+Performing normalization...<br>
+Starting linear regression...<br>
+Done with linear regression.<br>
+These are your correction factors: <br>
+c_u: 0.8326610520522192<br>
+c_l: 0.11605928227524738<br>
+------------------------------<br>
+Done with normalization<br>
+Calculating half-lives...<br>
+Starting half-life calculation...<br>
+Done calculating half-lives.<br>
+------------------------------<br>
+Starting half-life calculation...<br>
+Done calculating half-lives.<br>
+------------------------------<br>
+Done calculating half-lives<br>
+Writing results into file...<br>
+Writing results into file...<br>
+Done writing results.<br>
+Done writing results
+</code>
+<br>
+<br>
+<b>Quality control:</b><br></br>
+<code>
+Reading data...<br>
+Loading data...<br>
+Done loading data.<br>
+You have 31451 probesets.<br>
+------------------------------<br>
+Loading attributes...<br>
+Done loading attributes.<br>
+------------------------------<br>
+Done reading data<br>
+Evaluating data...<br>
+------------------------------<br>
+Starting quality control...<br>
+
+13571 probesets had to be discarded, because no sequence data was available for them.<br>
+You have 17881 probesets.<br>
+Done with quality control<br>
+------------------------------<br>
+Done evaluating<br>
+Filtering data...<br>
+Filtering data...<br>
+Done filtering data.<br>
+You have 11031 probesets.<br>
+------------------------------<br>
+Filtering data...<br>
+Done filtering data.<br>
+You have 10984 probesets.<br>
+------------------------------<br>
+Filtering data...<br>
+Done filtering data.<br>
+You have 10937 probesets.<br>
+------------------------------<br>
+Filtering data...<br>
+Done filtering data.<br>
+You have 10731 probesets.<br>
+------------------------------<br>
+Done filtering data<br>
+</code>
+<br>
+<br>
+<table style="text-align: left; width: 100%;" border="0" cellpadding="2"
+	cellspacing="2">
+	<tbody>
+		<tr>
+			<td style="width: 10px;"></td>
+			<td><code> </code></td>
+		</tr>
+	</tbody>
+</table>
+<br>
+The following files should be produced:
+<br>
+<ul>
+	<li>Example_mouse_filtered.txt</li>
+	<li>Example_mouse_halflives.txt</li>
+	<li>Example_mouse_quality.txt</li>
+</ul>
+<br>
+
+
+<!-- footer start -->
+<br />
+<br />
+<hr size="1" />
+<div style="font-size: small"><a target="_blank"
+	href="http://www.bio.ifi.lmu.de/software/HALO">HALO</a> documentation</div>
+
+<!-- footer end -->
+
+</body>
+</html>
